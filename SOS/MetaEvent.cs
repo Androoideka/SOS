@@ -7,6 +7,7 @@
         {
             deltaTime = deltatime;
             eventType = 255;
+            i--;
             patch = i;
         }
     }

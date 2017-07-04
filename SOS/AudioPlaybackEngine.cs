@@ -18,13 +18,15 @@ namespace SOS
             outputDevice.Play();
         }
 
-        public void PlaySound(string fileName, byte t)
+        public void PlaySound(string fileName)
         {
             var input = new AudioFileReader(fileName);
-            input.Volume = 1f / 127f * t;
             AddMixerInput(new AutoDisposeFileReader(input));
         }
-
+        public void PlaySound(AudioFileReader sound)
+        {
+            AddMixerInput(new AutoDisposeFileReader(sound));
+        }
         private ISampleProvider ConvertToRightChannelCount(ISampleProvider input)
         {
             if (input.WaveFormat.Channels == mixer.WaveFormat.Channels)

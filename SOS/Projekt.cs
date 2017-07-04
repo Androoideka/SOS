@@ -21,11 +21,16 @@ namespace SOS
         }
         private void TmrTick(object sender, EventArgs e)
         {
+            int j = 0;
             for (int i = 0; i < 16; i++)
             {
-                if (tr[i] != null)
+                if (tr[i] != null && !tr[i].ended)
                     tr[i].Play();
+                else
+                    j++;
             }
+            if (j == 16)
+                tmr.Enabled = false;
         }
         public static void CreateAllInstruments()
         {

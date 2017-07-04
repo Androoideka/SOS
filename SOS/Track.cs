@@ -4,9 +4,10 @@ namespace SOS
 {
     public class Track
     {
-        internal List<Event> e;
-        private int count, eventNum, instSel;
+        private List<Event> e;
         private CachedSound[] cac = new CachedSound[128];
+        private int count, eventNum, instSel;
+        public bool ended;
         public Track()
         {
             e = new List<Event>();
@@ -20,17 +21,15 @@ namespace SOS
             byte sixteenthsSinceLastMessage = 0;
             for (int i = 0; i < n; i++)
             {
-                for (byte j = 0; j < 129; j++)
+                for (int j = a.GetLength(0)-1; j >= 0; j--)
                 {
                     if (lastVal[j] != a[j, i])
                     {
-                        if (j == 0)
+                        //YES I'M SORRY IT'S HARD-CODED
+                        if (j >= 128)
                             e.Add(new MetaEvent(a[j, i], sixteenthsSinceLastMessage));
                         else
-                        {
-                            byte t = (byte)(j - 1);
-                            e.Add(new MIDIEvent(a[j, i], t, sixteenthsSinceLastMessage));
-                        }
+                            e.Add(new MIDIEvent(a[j, i], (byte)j, sixteenthsSinceLastMessage));
                         lastVal[j] = a[j, i];
                         sixteenthsSinceLastMessage = 0;
                     }
@@ -39,17 +38,17 @@ namespace SOS
             }
             e.Add(new MetaEvent(255, sixteenthsSinceLastMessage));
         }
-        private int lengthOfTrack()
+        private int lengthToPoint(int n)
         {
             int p = 0;
-            for (int i = 0; i < e.Count; i++)
+            for (int i = 0; i < n; i++)
                 p += e[i].getDT(1);
             return p;
         }
         public byte[,] ExportPattern()
         {
             int count = 0;
-            int n = lengthOfTrack();
+            int n = lengthToPoint(e.Count);
             byte[,] nizSablon = new byte[129, n];
             for (int i = 0; i < 129; i++)
             {
@@ -66,7 +65,7 @@ namespace SOS
                 count += e[i].getDT(1);
                 if (e[i].eventType == 0)
                     nizSablon[(e[i] as MIDIEvent).note, count] = (e[i] as MIDIEvent).velocity;
-                else if ((e[i] as MetaEvent).patch != 255)
+                else if ((e[i] as MetaEvent).patch != 254)
                     nizSablon[128, count] = (e[i] as MetaEvent).patch;
 
             }
@@ -82,14 +81,14 @@ namespace SOS
         }
         public void Play()
         {
-            while ((e[eventNum].eventType != 255 || (e[eventNum] as MetaEvent).patch != 255) && count == e[eventNum].getDT(1))
+            while ((e[eventNum].eventType != 255 || (e[eventNum] as MetaEvent).patch != 254) && count == e[eventNum].getDT(1))
             {
                 if (e[eventNum].eventType == 0)
                 {
                     if ((e[eventNum] as MIDIEvent).velocity == 0)
                         AudioPlaybackEngine.Instance.Dispose();
                     else
-                        AudioPlaybackEngine.Instance.PlaySound(Projekt.sb[instSel].note[(e[eventNum] as MIDIEvent).note], (e[eventNum] as MIDIEvent).velocity);
+                        AudioPlaybackEngine.Instance.PlaySound(Projekt.sb[instSel].note[(e[eventNum] as MIDIEvent).note]);
                 }
                 else
                     Load((e[eventNum] as MetaEvent).patch);

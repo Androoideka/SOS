@@ -7,10 +7,10 @@ namespace SOS
     public partial class PianoRoll : Form
     {
         public Track t;
-        NumericUpDown trLng;
-        DataGridView trInst, trComp;
-        ComboBox paintInst;
-        byte velocityBrush = 64;
+        private NumericUpDown trLng;
+        private DataGridView trInst, trComp;
+        private ComboBox paintInst;
+        private byte velocityBrush = 64;
         public PianoRoll(Track tr)
         {
             t = tr;
@@ -27,7 +27,6 @@ namespace SOS
             trLng.Font = new Font("Arial", 32f);
             trLng.Maximum = decimal.MaxValue;
             trLng.Enabled = true;
-            trLng.Value = 0;
             trLng.ValueChanged += ValChange;
 
             paintInst = new ComboBox();
@@ -79,17 +78,18 @@ namespace SOS
             Controls.Add(trComp);
             SetupTrComp(0, (int)trLng.Value, ClientRectangle.Height / 16);
             if (t != null)
-                LoadIn(t.ExportPattern());
+            {
+                LoadIn(t.ExportPattern(), trComp, trInst);
+            }
             else
             {
                 t = new Track();
                 trLng.Minimum = 16;
             }
         }
-        public void SetInstruments(ComboBox cb)
+        private void SetInstruments(ComboBox cb)
         {
             cb.Items.Clear();
-            cb.Items.Add("None");
             for (int i = 0; i < Projekt.sb.Length; i++)
                 cb.Items.Add(Projekt.sb[i].ime);
             cb.SelectedIndex = 0;
@@ -107,10 +107,10 @@ namespace SOS
             {
                 while (trLng.Value % 4 != 0)
                     trLng.Value -= 1;
-                trComp.ColumnCount = Convert.ToInt32(trLng.Value);
+                trComp.ColumnCount = trInst.ColumnCount = Convert.ToInt32(trLng.Value);
             }
         }
-        public void SetupTrComp(int str, int n, int szCell)
+        private void SetupTrComp(int str, int n, int szCell)
         {
             trComp.RowCount = 128;
             trInst.RowCount = 1;
@@ -127,7 +127,7 @@ namespace SOS
                 }
                 trInst.Rows[0].Height = szCell;
                 trInst.Columns[i].Width = szCell;
-                trInst[i, 0].Value = "0";
+                trInst[i, 0].Value = "1";
             }
             trLng.Enabled = true;
         }
@@ -168,49 +168,44 @@ namespace SOS
             if (e.RowIndex != -1 && e.ColumnIndex != -1 && e.Button != MouseButtons.None)
                 trInst[e.ColumnIndex, 0].Value = paintInst.SelectedIndex;
         }
-        public byte[,] Generate()
+        private byte[,] InsertFromDG(byte[,] p, DataGridView dgv, int str, int n)
         {
-            byte[,] t = new byte[129, trComp.ColumnCount];
-            for (int i = 0; i < 129; i++)
+            for (int i = str; i < n; i++)
             {
-                for (int j = 0; j < trComp.ColumnCount; j++)
-                {
-                    if (i == 0)
-                        t[i, j] = Convert.ToByte((trInst[j, 0].Value));
-                    else
-                        t[i, j] = Convert.ToByte(trComp[j, i - 1].Value);
-                }
+                for (int j = 0; j < dgv.ColumnCount; j++)
+                    p[i, j] = Convert.ToByte(dgv[j, i-str].Value);
             }
+            return p;
+        }
+        private byte[,] Generate(DataGridView dgv1, DataGridView dgv2)
+        {
+            byte[,] t = new byte[dgv1.RowCount + dgv2.RowCount, dgv1.ColumnCount];
+            InsertFromDG(t, dgv1, 0, dgv1.RowCount);
+            InsertFromDG(t, dgv2, dgv1.RowCount, dgv1.RowCount + dgv2.RowCount);
             return t;
         }
-        public void LoadIn(byte[,] p)
+        private void InsertIntoDG(byte [,] t, DataGridView dgv, int str, int n, bool ac)
         {
-            trLng.Value = p.GetLength(1);
-            trComp.ColumnCount = p.GetLength(1);
-            for (int i = 0; i < p.GetLength(1); i++)
+            for (int i = 0; i < dgv.ColumnCount; i++)
             {
-                for (int j = 0; j < 129; j++)
+                for (int j = str; j < n; j++)
                 {
-                    if (j == 128)
-                    {
-                        trInst[i, 0].Value = p[j, i];
-                    }
-                    else
-                    {
-                        trComp[i, j].Value = p[j, i];
-                        AssignColor(i, j);
-                    }
+                    dgv[i, j - str].Value = t[j, i];
+                    if (ac)
+                        AssignColor(i, j - str);
                 }
             }
+        }
+        private void LoadIn(byte[,] p, DataGridView dgv1, DataGridView dgv2)
+        {
+            trLng.Value = p.GetLength(1);
+            InsertIntoDG(p, dgv1, 0, dgv1.RowCount, true);
+            InsertIntoDG(p, dgv2, dgv1.RowCount, dgv1.RowCount + dgv2.RowCount, false);
             trLng.Minimum = 16;
         }
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Save();
-        }
-        private void Save()
-        {
-            t.ImportPattern(Generate(), trComp.ColumnCount);
+            t.ImportPattern(Generate(trComp, trInst), trComp.ColumnCount);
         }
     }
 }
