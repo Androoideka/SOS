@@ -11,7 +11,6 @@ namespace SOS
             velocity = curVel;
             InitializeComponent();
         }
-
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             progressBar1.Value = trackBar1.Value;
@@ -19,4 +18,3 @@ namespace SOS
         }
     }
 }
-

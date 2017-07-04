@@ -9,7 +9,7 @@ namespace SOS
         private readonly IWavePlayer outputDevice;
         private readonly MixingSampleProvider mixer;
 
-        public AudioPlaybackEngine(int sampleRate = 11025, int channelCount = 2)
+        public AudioPlaybackEngine(int sampleRate = 44100, int channelCount = 2)
         {
             outputDevice = new WaveOutEvent();
             mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channelCount));
@@ -21,7 +21,6 @@ namespace SOS
         public void PlaySound(string fileName, float vol)
         {
             var input = new AudioFileReader(fileName);
-            //input = WaveFileWriter.CreateWaveFile16(fileName, new WdlResamplingSampleProvider(input, 44100));
             input.Volume = vol;
             AddMixerInput(new AutoDisposeFileReader(input));
         }
@@ -48,6 +47,6 @@ namespace SOS
             outputDevice.Dispose();
         }
 
-        public static readonly AudioPlaybackEngine Instance = new AudioPlaybackEngine(11025, 2);
+        public static readonly AudioPlaybackEngine Instance = new AudioPlaybackEngine(44100, 2);
     }
 }

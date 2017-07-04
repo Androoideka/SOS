@@ -13,9 +13,7 @@
             {
                 note = new string[128];
                 int j = 0;
-                for (int i = 0; i < files.Length; i++)
-                    note[i] = files[i];
-                for (int i = files.Length; i < 128; i++)
+                for (int i = 0; i < 128; i++)
                 {
                     note[i] = files[j];
                     j++;

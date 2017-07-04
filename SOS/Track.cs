@@ -6,11 +6,13 @@ namespace SOS
     {
         private List<Event> e;
         private int count, eventNum;
+        private float[] vel;
         private string[] cas;
         internal bool ended;
         public Track()
         {
             e = new List<Event>();
+            vel = new float[128];
             cas = new string[128];
         }
         internal void ImportPattern(byte[,] a, int n)
@@ -18,7 +20,7 @@ namespace SOS
             e.Clear();
             byte[] lastVal = new byte[129];
             for (int i = 0; i < 129; i++)
-                lastVal[i] = 255;
+                lastVal[i] = 0;
             byte sixteenthsSinceLastMessage = 0;
             for (int i = 0; i < n; i++)
             {
@@ -28,7 +30,7 @@ namespace SOS
                     {
                         //YES I'M SORRY IT'S HARD-CODED
                         if (j >= 128)
-                            e.Add(new MetaEvent(a[j, i], sixteenthsSinceLastMessage));
+                            e.Add(new PCEvent(a[j, i], sixteenthsSinceLastMessage));
                         else
                             e.Add(new MIDIEvent(a[j, i], (byte)j, sixteenthsSinceLastMessage));
                         lastVal[j] = a[j, i];
@@ -37,7 +39,7 @@ namespace SOS
                 }
                 sixteenthsSinceLastMessage++;
             }
-            e.Add(new MetaEvent(255, sixteenthsSinceLastMessage));
+            e.Add(new PCEvent(255, sixteenthsSinceLastMessage));
         }
         private int lengthToPoint(int n)
         {
@@ -66,8 +68,8 @@ namespace SOS
                 count += e[i].getDT(1);
                 if (e[i].eventType == 0)
                     nizSablon[(e[i] as MIDIEvent).note, count] = (e[i] as MIDIEvent).velocity;
-                else if ((e[i] as MetaEvent).patch != 255)
-                    nizSablon[128, count] = (byte)((e[i] as MetaEvent).patch);
+                else if ((e[i] as PCEvent).patch != 255)
+                    nizSablon[128, count] = (byte)((e[i] as PCEvent).patch);
 
             }
             for (int i = 1; i < n; i++)
@@ -82,25 +84,35 @@ namespace SOS
         }
         public void ResetTrackPosition()
         {
+            for (int i = 0; i < 128; i++)
+                vel[i] = 0;
+            Load(0);
             ended = false;
             count = 0;
             eventNum = 0;
         }
+        private void PlaySound()
+        {
+            for (int i = 0; i < 128; i++)
+            {
+                if(vel[i] != 0)
+                    AudioPlaybackEngine.Instance.PlaySound(cas[i], vel[i]);
+            }
+        }
         public void Play()
         {
-            while ((e[eventNum].eventType != 255 || (e[eventNum] as MetaEvent).patch != 255) && count == e[eventNum].getDT(1))
+            while (!(e[eventNum].eventType == 255 && (e[eventNum] as PCEvent).patch == 255) && count == e[eventNum].getDT(1))
             {
+                //IS CORRECT BUT NEEDS TO BE OPTIMISED! TIMER IS MULTITHREADED
                 if (e[eventNum].eventType == 0)
-                {
-                    if ((e[eventNum] as MIDIEvent).velocity != 0)
-                        AudioPlaybackEngine.Instance.PlaySound(cas[(e[eventNum] as MIDIEvent).note], (e[eventNum] as MIDIEvent).GetVolume());
-                }
+                    vel[(e[eventNum] as MIDIEvent).note] = (e[eventNum] as MIDIEvent).GetVolume();
                 else
-                    Load((e[eventNum] as MetaEvent).patch);
+                    Load((e[eventNum] as PCEvent).patch);
                 eventNum++;
                 count = 0;
             }
-            if (e[eventNum].eventType == 255 && (e[eventNum] as MetaEvent).patch == 255)
+            PlaySound();
+            if (e[eventNum].eventType == 255 && (e[eventNum] as PCEvent).patch == 255 && e[eventNum].getDT(1) == count)
                 ended = true;
             count++;
         }

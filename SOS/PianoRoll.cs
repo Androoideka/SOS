@@ -61,6 +61,7 @@ namespace SOS
             trComp.Width = ClientRectangle.Width;
             trComp.Height = ClientRectangle.Height - trComp.Top;
             trComp.ReadOnly = true;
+            trComp.RowHeadersVisible = false;
             trComp.ColumnHeadersVisible = false;
             trComp.AllowUserToResizeColumns = false;
             trComp.AllowUserToResizeRows = false;
@@ -70,8 +71,6 @@ namespace SOS
             trComp.DoubleBuffered(true);
             trComp.Enabled = true;
             trComp.CellMouseMove += BeatTransform;
-
-            trInst.Left = trComp.RowHeadersWidth;
 
             Controls.Add(trLng);
             Controls.Add(paintInst);
@@ -138,13 +137,6 @@ namespace SOS
                     trComp[e.ColumnIndex, e.RowIndex].Value = velocityBrush;
                 else if (e.Button == MouseButtons.Right)
                     trComp[e.ColumnIndex, e.RowIndex].Value = 0;
-                else if (e.Button == MouseButtons.Middle)
-                {
-                    InputVelocityForm inp = new InputVelocityForm(Convert.ToByte(trComp[e.ColumnIndex, 0].Value));
-                    inp.ShowDialog();
-                    trComp[e.ColumnIndex, e.RowIndex].Value = inp.velocity;
-                    velocityBrush = inp.velocity;
-                }
                 AssignColor(e.ColumnIndex, e.RowIndex);
             }
         }
@@ -214,17 +206,16 @@ namespace SOS
         {
             p.SaveToTrack(0, Generate(trComp, trInst), trComp.ColumnCount);
         }
-        private void tempoToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void velocityBrushToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int t = Convert.ToInt32((sender as ToolStripMenuItem).Tag);
-            for (int i = 0; i < tempoToolStripMenuItem.DropDownItems.Count; i++)
-            {
-                if (t == i)
-                    (tempoToolStripMenuItem.DropDownItems[i] as ToolStripMenuItem).CheckState = CheckState.Checked;
-                else
-                    (tempoToolStripMenuItem.DropDownItems[i] as ToolStripMenuItem).CheckState = CheckState.Unchecked;
-            }
-            p.Tempo(t);
+            InputVelocityForm inp = new InputVelocityForm(velocityBrush);
+            velocityBrush = inp.velocity;
+        }
+
+        private void setSoundbanksToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Projekt.SetSoundbanks();
         }
 
         private void playStopToolStripMenuItem_Click(object sender, EventArgs e)

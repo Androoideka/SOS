@@ -28,22 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setSoundbanksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tempoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.prestissimoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.prestoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.allegroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moderatoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.andanteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.adagioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.larghettoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.largoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteTrackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,39 +52,34 @@
             this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem16 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem17 = new System.Windows.Forms.ToolStripMenuItem();
-            this.playStopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.soundbanksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button1 = new System.Windows.Forms.Button();
+            this.prestissimoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.prestoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.allegroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moderatoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.andanteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adagioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.larghettoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.largoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(12, 42);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(25, 25);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "+";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.editToolStripMenuItem,
-            this.soundbanksToolStripMenuItem});
+            this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(865, 24);
-            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Size = new System.Drawing.Size(284, 24);
+            this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
-            this.openToolStripMenuItem,
-            this.saveAsToolStripMenuItem});
+            this.setSoundbanksToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -101,31 +87,26 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            // 
-            // saveAsToolStripMenuItem
-            // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
-            this.saveAsToolStripMenuItem.Text = "Save as";
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.playToolStripMenuItem,
             this.tempoToolStripMenuItem,
-            this.deleteTrackToolStripMenuItem,
-            this.playStopToolStripMenuItem});
+            this.deleteTrackToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // setSoundbanksToolStripMenuItem
+            // 
+            this.setSoundbanksToolStripMenuItem.Name = "setSoundbanksToolStripMenuItem";
+            this.setSoundbanksToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.setSoundbanksToolStripMenuItem.Text = "Set Soundbanks";
+            this.setSoundbanksToolStripMenuItem.Click += new System.EventHandler(this.soundbanksToolStripMenuItem_Click_1);
             // 
             // tempoToolStripMenuItem
             // 
@@ -142,69 +123,12 @@
             this.tempoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.tempoToolStripMenuItem.Text = "Tempo";
             // 
-            // prestissimoToolStripMenuItem
+            // playToolStripMenuItem
             // 
-            this.prestissimoToolStripMenuItem.Name = "prestissimoToolStripMenuItem";
-            this.prestissimoToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.prestissimoToolStripMenuItem.Tag = "0";
-            this.prestissimoToolStripMenuItem.Text = "Prestissimo";
-            this.prestissimoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
-            // 
-            // prestoToolStripMenuItem
-            // 
-            this.prestoToolStripMenuItem.Name = "prestoToolStripMenuItem";
-            this.prestoToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.prestoToolStripMenuItem.Tag = "1";
-            this.prestoToolStripMenuItem.Text = "Presto";
-            this.prestoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
-            // 
-            // allegroToolStripMenuItem
-            // 
-            this.allegroToolStripMenuItem.Name = "allegroToolStripMenuItem";
-            this.allegroToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.allegroToolStripMenuItem.Tag = "2";
-            this.allegroToolStripMenuItem.Text = "Allegro";
-            this.allegroToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
-            // 
-            // moderatoToolStripMenuItem
-            // 
-            this.moderatoToolStripMenuItem.Name = "moderatoToolStripMenuItem";
-            this.moderatoToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.moderatoToolStripMenuItem.Tag = "3";
-            this.moderatoToolStripMenuItem.Text = "Moderato";
-            this.moderatoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
-            // 
-            // andanteToolStripMenuItem
-            // 
-            this.andanteToolStripMenuItem.Name = "andanteToolStripMenuItem";
-            this.andanteToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.andanteToolStripMenuItem.Tag = "4";
-            this.andanteToolStripMenuItem.Text = "Andante";
-            this.andanteToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
-            // 
-            // adagioToolStripMenuItem
-            // 
-            this.adagioToolStripMenuItem.Name = "adagioToolStripMenuItem";
-            this.adagioToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.adagioToolStripMenuItem.Tag = "5";
-            this.adagioToolStripMenuItem.Text = "Adagio";
-            this.adagioToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
-            // 
-            // larghettoToolStripMenuItem
-            // 
-            this.larghettoToolStripMenuItem.Name = "larghettoToolStripMenuItem";
-            this.larghettoToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.larghettoToolStripMenuItem.Tag = "6";
-            this.larghettoToolStripMenuItem.Text = "Larghetto";
-            this.larghettoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
-            // 
-            // largoToolStripMenuItem
-            // 
-            this.largoToolStripMenuItem.Name = "largoToolStripMenuItem";
-            this.largoToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.largoToolStripMenuItem.Tag = "7";
-            this.largoToolStripMenuItem.Text = "Largo";
-            this.largoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
+            this.playToolStripMenuItem.Name = "playToolStripMenuItem";
+            this.playToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.playToolStripMenuItem.Text = "Play";
+            this.playToolStripMenuItem.Click += new System.EventHandler(this.playStopToolStripMenuItem_Click);
             // 
             // deleteTrackToolStripMenuItem
             // 
@@ -228,6 +152,7 @@
             this.deleteTrackToolStripMenuItem.Name = "deleteTrackToolStripMenuItem";
             this.deleteTrackToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.deleteTrackToolStripMenuItem.Text = "Delete Track";
+            this.deleteTrackToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -341,27 +266,78 @@
             this.toolStripMenuItem17.Text = "16";
             this.toolStripMenuItem17.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
-            // playStopToolStripMenuItem
+            // button1
             // 
-            this.playStopToolStripMenuItem.Name = "playStopToolStripMenuItem";
-            this.playStopToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.playStopToolStripMenuItem.Text = "Play/Stop";
-            this.playStopToolStripMenuItem.Click += new System.EventHandler(this.playStopToolStripMenuItem_Click);
+            this.button1.Location = new System.Drawing.Point(12, 27);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "+";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // soundbanksToolStripMenuItem
+            // prestissimoToolStripMenuItem
             // 
-            this.soundbanksToolStripMenuItem.Name = "soundbanksToolStripMenuItem";
-            this.soundbanksToolStripMenuItem.Size = new System.Drawing.Size(84, 20);
-            this.soundbanksToolStripMenuItem.Text = "Soundbanks";
-            this.soundbanksToolStripMenuItem.Click += new System.EventHandler(this.soundbanksToolStripMenuItem_Click_1);
+            this.prestissimoToolStripMenuItem.Name = "prestissimoToolStripMenuItem";
+            this.prestissimoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.prestissimoToolStripMenuItem.Text = "Prestissimo";
+            this.prestissimoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
+            // 
+            // prestoToolStripMenuItem
+            // 
+            this.prestoToolStripMenuItem.Name = "prestoToolStripMenuItem";
+            this.prestoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.prestoToolStripMenuItem.Text = "Presto";
+            this.prestoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
+            // 
+            // allegroToolStripMenuItem
+            // 
+            this.allegroToolStripMenuItem.Name = "allegroToolStripMenuItem";
+            this.allegroToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.allegroToolStripMenuItem.Text = "Allegro";
+            this.allegroToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
+            // 
+            // moderatoToolStripMenuItem
+            // 
+            this.moderatoToolStripMenuItem.Name = "moderatoToolStripMenuItem";
+            this.moderatoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.moderatoToolStripMenuItem.Text = "Moderato";
+            this.moderatoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
+            // 
+            // andanteToolStripMenuItem
+            // 
+            this.andanteToolStripMenuItem.Name = "andanteToolStripMenuItem";
+            this.andanteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.andanteToolStripMenuItem.Text = "Andante";
+            this.andanteToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
+            // 
+            // adagioToolStripMenuItem
+            // 
+            this.adagioToolStripMenuItem.Name = "adagioToolStripMenuItem";
+            this.adagioToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.adagioToolStripMenuItem.Text = "Adagio";
+            this.adagioToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
+            // 
+            // larghettoToolStripMenuItem
+            // 
+            this.larghettoToolStripMenuItem.Name = "larghettoToolStripMenuItem";
+            this.larghettoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.larghettoToolStripMenuItem.Text = "Larghetto";
+            this.larghettoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
+            // 
+            // largoToolStripMenuItem
+            // 
+            this.largoToolStripMenuItem.Name = "largoToolStripMenuItem";
+            this.largoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.largoToolStripMenuItem.Text = "Largo";
+            this.largoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
             // 
             // ProjectView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(865, 563);
+            this.ClientSize = new System.Drawing.Size(284, 434);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -375,21 +351,15 @@
 
         }
 
-        private System.Windows.Forms.Button button1;
+        #endregion
+
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setSoundbanksToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem playToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tempoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem largoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem larghettoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem adagioToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem andanteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem allegroToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem prestoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem prestissimoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moderatoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteTrackToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
@@ -406,12 +376,16 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem14;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem15;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem16;
-        private System.Windows.Forms.ToolStripMenuItem playStopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem17;
-        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem soundbanksToolStripMenuItem;
-
-        #endregion
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripMenuItem prestissimoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem prestoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem allegroToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem moderatoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem andanteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem adagioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem larghettoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem largoToolStripMenuItem;
     }
 }
 

@@ -38,8 +38,8 @@ namespace SOS
         }
         public static void SetSoundbanks()
         {
-            ProjektAdjuster pa = new ProjektAdjuster();
-            pa.ShowDialog();
+            SoundbankAdjuster sa = new SoundbankAdjuster();
+            sa.ShowDialog();
         }
         public static void CreateAllInstruments()
         {
@@ -51,10 +51,6 @@ namespace SOS
         {
             return 60000d / tmr.Interval / 4d;
         }
-        public void Tempo(int p)
-        {
-            SetTempo(p == 0 ? 208 : (p == 1 ? 200 : (p == 2 ? 168 : (p == 3 ? 120 : (p == 4 ? 108 : (p == 5 ? 76 : (p == 6 ? 66 : 40)))))));
-        }
         public void SaveToTrack(int i, byte[,] p, int n)
         {
             tr[i].ImportPattern(p, n);
@@ -64,8 +60,9 @@ namespace SOS
             for (int j = i+1; j < 16; j++)
                 tr[j - 1] = tr[j];
         }
-        private void SetTempo(int bpm)
+        public void SetTempo(int p)
         {
+            int bpm = p == 0 ? 208 : (p == 1 ? 200 : (p == 2 ? 168 : (p == 3 ? 120 : (p == 4 ? 108 : (p == 5 ? 76 : (p == 6 ? 66 : 40))))));
             tmr.Interval = 60000d / bpm / 4d;
         }
     }

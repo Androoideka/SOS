@@ -21,7 +21,7 @@ namespace SOS
                 b[i] = new Button();
                 b[i].Top = button1.Top + i * 32;
                 b[i].Left = button1.Left;
-                b[i].Width = ClientRectangle.Width / 16;
+                b[i].Width = ClientRectangle.Width;
                 b[i].Tag = i;
                 b[i].Text = "Edit Track " + i;
                 b[i].Click += bClick;
@@ -60,7 +60,7 @@ namespace SOS
                 else
                     (tempoToolStripMenuItem.DropDownItems[i] as ToolStripMenuItem).CheckState = CheckState.Unchecked;
             }
-            prj.Tempo(p);
+            prj.SetTempo(p);
         }
 
         private void playStopToolStripMenuItem_Click(object sender, EventArgs e)
@@ -76,7 +76,7 @@ namespace SOS
             n--;
             Controls.Remove(b[n]);
             int i = Convert.ToInt32((sender as ToolStripMenuItem).Text);
-            prj.DeleteTrack(i-1);
+            prj.DeleteTrack(i - 1);
         }
         private void soundbanksToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
