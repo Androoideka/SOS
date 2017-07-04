@@ -202,6 +202,7 @@ namespace SOS
                     }
                 }
             }
+            trLng.Minimum = 16;
         }
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {

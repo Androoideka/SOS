@@ -71,5 +71,10 @@ namespace SOS
             }
             prj.SetTempo(p == 0 ? 208 : (p == 1 ? 200 : (p == 2 ? 168 : (p == 3 ? 120 : (p == 4 ? 108 : (p == 5 ? 76 : (p == 6 ? 66 : 40)))))));
         }
+
+        private void playStopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            prj.tmr.Enabled = true;
+        }
     }
 }

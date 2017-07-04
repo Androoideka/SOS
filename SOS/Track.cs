@@ -6,6 +6,7 @@ namespace SOS
     {
         internal List<Event> e;
         private int count, eventNum;
+        private CachedSound[] cac = new CachedSound[128];
         public Track()
         {
             e = new List<Event>();
@@ -79,9 +80,31 @@ namespace SOS
             }
             return nizSablon;
         }
-        public bool Play()
+        public void Play()
         {
-            throw new System.NotImplementedException();
+            while ((e[eventNum].eventType != 255 || (e[eventNum] as MetaEvent).patch != 255) && count == e[eventNum].getDT(1))
+            {
+                if (e[eventNum].eventType == 0)
+                {
+                    //if ((e[eventNum] as MIDIEvent).velocity == 0)
+                        //AudioPlaybackEngine.Instance.Dispose();
+                    //else
+                    //{
+                        //mr[(e[eventNum] as MIDIEvent).note].Volume = 1d / 127d * (e[eventNum] as MIDIEvent).velocity;
+                        AudioPlaybackEngine.Instance.PlaySound(cac[(e[eventNum] as MIDIEvent).note]);
+                    //}
+                }
+                else
+                    Load((e[eventNum] as MetaEvent).patch);
+                eventNum++;
+                count = 0;
+            }
+            count++;
+        }
+        private void Load(int i)
+        {
+            for (int j = 0; j < 128; j++)
+                cac[j] = new CachedSound(Projekt.sb[i].note[j]);
         }
     }
 }
