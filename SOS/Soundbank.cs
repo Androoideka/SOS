@@ -2,12 +2,13 @@
 
 namespace SOS
 {
-    class Instrument
+    class Soundbank
     {
         public bool percussion;
+        public int n;
         public string ime;
         public SoundPlayer[] note;
-        public Instrument(string p, bool yes)
+        public Soundbank(string p, bool yes)
         {
             percussion = yes;
             ime = p;
@@ -18,9 +19,9 @@ namespace SOS
             }
             else
             {
-                note = new SoundPlayer[128];
-                for (int i = 0; i < 128; i++)
-                    note[0] = new SoundPlayer(ime + i + "sample.wav");
+                note = new SoundPlayer[n];
+                for (int i = 0; i < n; i++)
+                    note[i] = new SoundPlayer(ime + i + "sample.wav");
             }
         }
     }
