@@ -5,17 +5,28 @@ namespace SOS
     public class Soundbank
     {
         public string ime;
-        public MediaPlayer[] note; 
+        public string[] note; 
         public Soundbank(string p, string[] files)
         {
             ime = p;
-            note = new MediaPlayer[files.Length];
-            for (int i = 0; i < note.Length; i++)
+            if (files.Length == 128)
+                note = files;
+            else if (files.Length < 128)
             {
-                note[i] = new MediaPlayer();
-                //will probably import managed directx and use that
-                //note[i].Open(new System.Uri(files[i]));
+                note = new string[128];
+                int j = 0;
+                for (int i = 0; i < files.Length; i++)
+                    note[j] = files[j];
+                for (int i = files.Length; i < 128; i++)
+                {
+                    note[i] = files[j];
+                    j++;
+                    if (j >= files.Length)
+                        j = 0;
+                }
             }
+            else
+                throw new System.ArgumentOutOfRangeException("files", "HOW THE FUCK DID YOU MAKE THIS HAPPEN?????");
         }
     }
 }

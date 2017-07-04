@@ -49,13 +49,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddProperty.cs" />
+    <Compile Include="Event.cs" />
     <Compile Include="InputVelocityForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="InputVelocityForm.Designer.cs">
       <DependentUpon>InputVelocityForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PrikazTrake.cs" />
+    <Compile Include="MetaEvent.cs" />
+    <Compile Include="MIDIEvent.cs" />
     <Compile Include="ProjektAdjuster.cs">
       <SubType>Form</SubType>
     </Compile>

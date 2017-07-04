@@ -7,7 +7,7 @@ namespace SOS
     {
         Timer tmr;
         public Track[] tr;
-        public static Soundbank[] sb = new Soundbank[128];
+        public static Soundbank[] sb;
         public static int sbLength;
         int[] count, eventNum;
         public Projekt()
@@ -25,13 +25,8 @@ namespace SOS
             {
                 if (tr[i] != null)
                 {
-                    while (tr[i].e[eventNum[i]].note != 255 && count[i] == tr[i].e[eventNum[i]].getDT(tmr.Interval))
+                    while ((tr[i].e[eventNum[i]].eventType != 255 && (tr[i].e[eventNum[i]] as MetaEvent).patch != 255) && count[i] == tr[i].e[eventNum[i]].getDT(tmr.Interval))
                     {
-                        /*tr[i].instrument.note[tr[i].e[eventNum[i]].note].Volume = tr[i].e[eventNum[i]].getVolume();
-                        if (tr[i].instrument.note[tr[i].e[eventNum[i]].note].Volume != 0)
-                            tr[i].instrument.note[tr[i].e[eventNum[i]].note].Play();
-                        else
-                            tr[i].instrument.note[tr[i].e[eventNum[i]].note].Stop();*/
                         eventNum[i]++;
                         count[i] = 0;
                     }

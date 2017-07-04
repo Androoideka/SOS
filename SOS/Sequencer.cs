@@ -6,7 +6,7 @@ namespace SOS
     public partial class Sequencer : Form
     {
         Projekt prj = new Projekt();
-        PrikazTrake[] prk = new PrikazTrake[16];
+        Button[] b = new Button[16];
         int n;
         public Sequencer()
         {
@@ -14,37 +14,36 @@ namespace SOS
         }
         private void Sequencer_Load(object sender, EventArgs e)
         {
-            WindowState = FormWindowState.Maximized;
-            MinimumSize = Size;
-            MaximumSize = Size;
             SetCheckedMenuItem();
             for (int i = 0; i < 16; i++)
             {
-                prk[i] = new PrikazTrake(ClientRectangle, i, true);
-                prk[i].trComp.MouseClick += PROpen;
+                b[i] = new Button();
+                b[i].Top = button1.Top + i * (button1.Height + 39);
+                b[i].Left = button1.Left;
+                b[i].Width = ClientRectangle.Width / 16;
+                b[i].Tag = i;
+                b[i].Text = "Edit Track " + i;
+                b[i].Click += bClick;
             }
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            Controls.Add(prk[n].trInst);
-            Controls.Add(prk[n].trComp);
-            Controls.Add(prk[n].trLng);
-            prj.tr[n] = new Track();
+            PianoRoll pr = new PianoRoll(prj.tr[n]);
+            pr.Show();
+            prj.tr[n] = pr.t;
+            Controls.Add(b[n]);
             n++;
             if (n < 16)
-                button1.Top += button1.Size.Height + 39;
+                button1.Top += button1.Height + 32;
             else
                 button1.Visible = false;
         }
-        private void PROpen(object sender, MouseEventArgs e)
+        private void bClick(object sender, EventArgs e)
         {
-            SaveTrack();
-            if (prj.tr[Convert.ToInt32((sender as DataGridView).Tag)].instrument != null && (sender as DataGridView).HitTest(e.X, e.Y).Type == DataGridViewHitTestType.None)
-            {
-                PianoRoll pr = new PianoRoll(prj.tr[Convert.ToInt32((sender as DataGridView).Tag)]);
-                pr.ShowDialog();
-                prj.tr[Convert.ToInt32((sender as DataGridView).Tag)] = pr.t;
-            }
+            int i = Convert.ToInt32((sender as Button).Tag);
+            PianoRoll pr = new PianoRoll(prj.tr[i]);
+            pr.ShowDialog();
+            prj.tr[i] = pr.t;
         }
         private void Sequencer_MouseUp(object sender, MouseEventArgs e)
         {
@@ -52,62 +51,7 @@ namespace SOS
             {
                 ProjektAdjuster pa = new ProjektAdjuster();
                 pa.ShowDialog();
-                for (int i = 0; i < n; i++)
-                {
-                    if (prk[i].trInst.SelectedIndex != -1)
-                    {
-                        SaveTrack();
-                        prk[i].SetInstruments(prj.tr[i].instrument.ime);
-                    }
-                    else
-                        prk[i].SetInstruments();
-                }
             }
-        }
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveTrack();
-        }
-        private void SaveTrack()
-        {
-            for (int i = 0; i < n; i++)
-            {
-                if (prk[i].trInst.SelectedIndex != -1)
-                {
-                    string temp = prk[i].trInst.Items[prk[i].trInst.SelectedIndex].ToString();
-                    temp = temp.Substring(temp.IndexOf(" ") + 1);
-                    prj.tr[i].instrument = Projekt.FindInstrumentWithName(temp);
-                    prj.tr[i].ImportPattern(prk[i].Generate(), prk[i].trComp.RowCount);
-                }
-                else
-                    MessageBox.Show("Unable to save track " + i + "\nNo Instrument Selected");
-            }
-        }
-        private void SaveTrack(int i)
-        {
-            if (prk[i].trInst.SelectedIndex != -1)
-            {
-                string temp = prk[i].trInst.Items[prk[i].trInst.SelectedIndex].ToString();
-                temp = temp.Substring(temp.IndexOf(" ") + 1);
-                prj.tr[i].instrument = Projekt.FindInstrumentWithName(temp);
-                prj.tr[i].ImportPattern(prk[i].Generate(), prk[i].trComp.RowCount);
-            }
-            else
-                MessageBox.Show("Unable to save track " + (i+1) + "\nNo Instrument Selected");
-        }
-        private void DeleteTrack(int i)
-        {
-            if (prj.tr[i] != null)
-            {
-                button1.Top -= (button1.Height + 39);
-                Controls.Remove(prk[i].trInst);
-                Controls.Remove(prk[i].trComp);
-                Controls.Remove(prk[i].trLng);
-                n--;
-                prj.tr[i] = null;
-            }
-            else
-                MessageBox.Show("Unable to delete track " + (i+1) + "\nNot there");
         }
         private void SetCheckedMenuItem()
         {
@@ -130,12 +74,10 @@ namespace SOS
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            DeleteTrack(Convert.ToInt32((sender as ToolStripMenuItem).Text) - 1);
         }
 
         private void toolStripMenuItem18_Click(object sender, EventArgs e)
         {
-            SaveTrack(Convert.ToInt32((sender as ToolStripMenuItem).Text) - 1);
         }
     }
 }

@@ -35,12 +35,6 @@ namespace SOS
             }
             LoadIn();
         }
-
-        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (checkedListBox1.CheckedItems.Count > 128)
-                checkedListBox1.SetItemChecked(checkedListBox1.SelectedIndex, false);
-        }
         private void LoadIn()
         {
             checkedListBox1.Items.Clear();
@@ -52,6 +46,7 @@ namespace SOS
         private void ProjektAdjuster_FormClosing(object sender, FormClosingEventArgs e)
         {
             Projekt.sbLength = checkedListBox1.CheckedItems.Count;
+            Projekt.sb = new Soundbank[Projekt.sbLength];
             for (int i = 0; i < Projekt.sbLength; i++)
                 Projekt.sb[i] = new Soundbank(checkedListBox1.Items[checkedListBox1.CheckedIndices[i]].ToString(), Directory.GetFiles(Path.Combine(Application.StartupPath, checkedListBox1.Items[checkedListBox1.CheckedIndices[i]].ToString())));
         }

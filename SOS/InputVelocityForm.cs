@@ -5,8 +5,8 @@ namespace SOS
 {
     public partial class InputVelocityForm : Form
     {
-        public int velocity;
-        public InputVelocityForm(int curVel)
+        public byte velocity;
+        public InputVelocityForm(byte curVel)
         {
             velocity = curVel;
             InitializeComponent();
@@ -15,7 +15,7 @@ namespace SOS
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             progressBar1.Value = trackBar1.Value;
-            velocity = trackBar1.Value;
+            velocity = (byte)trackBar1.Value;
         }
     }
 }

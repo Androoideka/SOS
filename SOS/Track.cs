@@ -4,45 +4,31 @@ namespace SOS
 {
     public class Track
     {
-        internal struct MIDIMessage
-        {
-            private byte deltaTime;
-            public readonly byte velocity;
-            public readonly byte note;
-            public MIDIMessage(byte vel, byte no, byte deltatime)
-            {
-                deltaTime = deltatime;
-                velocity = vel;
-                note = no;
-            }
-            public int getDT(int interval)
-            {
-                return deltaTime * interval;
-            }
-        }
-        internal List<MIDIMessage> e = new List<MIDIMessage>();
-        public Soundbank instrument;
+        internal List<Event> e = new List<Event>();
         public void ImportPattern(byte[,] a, int n)
         {
             e.Clear();
-            byte[] lastVal = new byte[instrument.note.Length];
-            for (int i = 0; i < instrument.note.Length; i++)
+            byte[] lastVal = new byte[129];
+            for (int i = 0; i < 129; i++)
                 lastVal[i] = 0;
             byte sixteenthsSinceLastMessage = 0;
             for (int i = 0; i < n; i++)
             {
-                for (byte j = 0; j < instrument.note.Length; j++)
+                for (byte j = 0; j < 129; j++)
                 {
                     if (lastVal[j] != a[j, i])
                     {
-                        e.Add(new MIDIMessage(a[j, i], j, sixteenthsSinceLastMessage));
+                        if (j == 128)
+                            e.Add(new MetaEvent(a[j, i], sixteenthsSinceLastMessage));
+                        else
+                            e.Add(new MIDIEvent(a[j, i], j, sixteenthsSinceLastMessage));
                         lastVal[j] = a[j, i];
                         sixteenthsSinceLastMessage = 0;
                     }
                 }
                 sixteenthsSinceLastMessage++;
             }
-            e.Add(new MIDIMessage(0, 255, sixteenthsSinceLastMessage));
+            e.Add(new MIDIEvent(0, 255, sixteenthsSinceLastMessage));
         }
         private int lengthOfTrack()
         {
@@ -55,8 +41,8 @@ namespace SOS
         {
             int count = 0;
             int n = lengthOfTrack();
-            byte[,] nizSablon = new byte[instrument.note.Length,n];
-            for (int i = 0; i < instrument.note.Length; i++)
+            byte[,] nizSablon = new byte[129,n];
+            for (int i = 0; i < 129; i++)
             {
                 for (int j = 0; j < n; j++)
                 {
@@ -69,12 +55,14 @@ namespace SOS
             for (int i = 0; i < e.Count; i++)
             {
                 count += e[i].getDT(1);
-                if(e[i].note != 255)
-                    nizSablon[e[i].note, count] = e[i].velocity;
+                if (e[i].eventType == 255)
+                    nizSablon[128, count] = (e[i] as MetaEvent).patch;
+                else if((e[i] as MIDIEvent).note != 255)
+                    nizSablon[(e[i] as MIDIEvent).note, count] = (e[i] as MIDIEvent).velocity;
             }
             for (int i = 1; i < n; i++)
             {
-                for (int j = 0; j < instrument.note.Length; j++)
+                for (int j = 0; j < 129; j++)
                 {
                     if (nizSablon[j, i] == 255)
                         nizSablon[j, i] = nizSablon[j, i - 1];
