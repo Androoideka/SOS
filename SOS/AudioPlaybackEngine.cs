@@ -18,9 +18,10 @@ namespace SOS
             outputDevice.Play();
         }
 
-        public void PlaySound(string fileName)
+        public void PlaySound(string fileName, byte t)
         {
             var input = new AudioFileReader(fileName);
+            input.Volume = 1f / 127f * t;
             AddMixerInput(new AutoDisposeFileReader(input));
         }
 

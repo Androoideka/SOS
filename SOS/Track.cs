@@ -5,7 +5,7 @@ namespace SOS
     public class Track
     {
         internal List<Event> e;
-        private int count, eventNum;
+        private int count, eventNum, instSel;
         private CachedSound[] cac = new CachedSound[128];
         public Track()
         {
@@ -86,13 +86,10 @@ namespace SOS
             {
                 if (e[eventNum].eventType == 0)
                 {
-                    //if ((e[eventNum] as MIDIEvent).velocity == 0)
-                        //AudioPlaybackEngine.Instance.Dispose();
-                    //else
-                    //{
-                        //mr[(e[eventNum] as MIDIEvent).note].Volume = 1d / 127d * (e[eventNum] as MIDIEvent).velocity;
-                        AudioPlaybackEngine.Instance.PlaySound(cac[(e[eventNum] as MIDIEvent).note]);
-                    //}
+                    if ((e[eventNum] as MIDIEvent).velocity == 0)
+                        AudioPlaybackEngine.Instance.Dispose();
+                    else
+                        AudioPlaybackEngine.Instance.PlaySound(Projekt.sb[instSel].note[(e[eventNum] as MIDIEvent).note], (e[eventNum] as MIDIEvent).velocity);
                 }
                 else
                     Load((e[eventNum] as MetaEvent).patch);
@@ -103,8 +100,9 @@ namespace SOS
         }
         private void Load(int i)
         {
-            for (int j = 0; j < 128; j++)
-                cac[j] = new CachedSound(Projekt.sb[i].note[j]);
+            instSel = i;
+            //for (int j = 0; j < 128; j++)
+                //cac[j] = new CachedSound(Projekt.sb[i].note[j]);
         }
     }
 }
