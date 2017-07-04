@@ -8,7 +8,7 @@ namespace SOS
         private bool isDisposed;
         public AutoDisposeFileReader(AudioFileReader reader)
         {
-            this.reader = reader;   
+            this.reader = reader;
             this.WaveFormat = reader.WaveFormat;
         }
 

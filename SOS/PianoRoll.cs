@@ -6,14 +6,15 @@ namespace SOS
 {
     public partial class PianoRoll : Form
     {
-        public Track t;
+        public Projekt p;
         private NumericUpDown trLng;
         private DataGridView trInst, trComp;
         private ComboBox paintInst;
         private byte velocityBrush = 64;
         public PianoRoll(Track tr)
         {
-            t = tr;
+            p = new Projekt();
+            p.tr[0] = tr;
             InitializeComponent();
         }
         private void PianoRoll_Load(object sender, EventArgs e)
@@ -77,13 +78,11 @@ namespace SOS
             Controls.Add(trInst);
             Controls.Add(trComp);
             SetupTrComp(0, (int)trLng.Value, ClientRectangle.Height / 16);
-            if (t != null)
-            {
-                LoadIn(t.ExportPattern(), trComp, trInst);
-            }
+            if (p.tr[0] != null)
+                LoadIn(p.tr[0].ExportPattern(), trComp, trInst);
             else
             {
-                t = new Track();
+                p.tr[0] = new Track();
                 trLng.Minimum = 16;
             }
         }
@@ -127,7 +126,7 @@ namespace SOS
                 }
                 trInst.Rows[0].Height = szCell;
                 trInst.Columns[i].Width = szCell;
-                trInst[i, 0].Value = "1";
+                trInst[i, 0].Value = "0";
             }
             trLng.Enabled = true;
         }
@@ -173,7 +172,7 @@ namespace SOS
             for (int i = str; i < n; i++)
             {
                 for (int j = 0; j < dgv.ColumnCount; j++)
-                    p[i, j] = Convert.ToByte(dgv[j, i-str].Value);
+                    p[i, j] = Convert.ToByte(dgv[j, i - str].Value);
             }
             return p;
         }
@@ -184,7 +183,7 @@ namespace SOS
             InsertFromDG(t, dgv2, dgv1.RowCount, dgv1.RowCount + dgv2.RowCount);
             return t;
         }
-        private void InsertIntoDG(byte [,] t, DataGridView dgv, int str, int n, bool ac)
+        private void InsertIntoDG(byte[,] t, DataGridView dgv, int str, int n, bool ac)
         {
             for (int i = 0; i < dgv.ColumnCount; i++)
             {
@@ -203,19 +202,35 @@ namespace SOS
             InsertIntoDG(p, dgv2, dgv1.RowCount, dgv1.RowCount + dgv2.RowCount, false);
             trLng.Minimum = 16;
         }
-
         private void PianoRoll_FormClosing(object sender, FormClosingEventArgs e)
         {
             SaveTrack();
         }
-
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveTrack();
         }
         private void SaveTrack()
         {
-            t.ImportPattern(Generate(trComp, trInst), trComp.ColumnCount);
+            p.SaveToTrack(0, Generate(trComp, trInst), trComp.ColumnCount);
+        }
+        private void tempoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int t = Convert.ToInt32((sender as ToolStripMenuItem).Tag);
+            for (int i = 0; i < tempoToolStripMenuItem.DropDownItems.Count; i++)
+            {
+                if (t == i)
+                    (tempoToolStripMenuItem.DropDownItems[i] as ToolStripMenuItem).CheckState = CheckState.Checked;
+                else
+                    (tempoToolStripMenuItem.DropDownItems[i] as ToolStripMenuItem).CheckState = CheckState.Unchecked;
+            }
+            p.Tempo(t);
+        }
+
+        private void playStopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveTrack();
+            p.Reset();
         }
     }
 }

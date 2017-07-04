@@ -1,6 +1,6 @@
 ﻿namespace SOS
 {
-    class Soundbank
+    public class Soundbank
     {
         public string ime;
         public string[] note;
@@ -9,12 +9,12 @@
             ime = p;
             if (files.Length == 128)
                 note = files;
-            else if (files.Length < 128)
+            else
             {
                 note = new string[128];
                 int j = 0;
                 for (int i = 0; i < files.Length; i++)
-                    note[j] = files[j];
+                    note[i] = files[i];
                 for (int i = files.Length; i < 128; i++)
                 {
                     note[i] = files[j];
@@ -23,8 +23,6 @@
                         j = 0;
                 }
             }
-            else
-                throw new System.ArgumentOutOfRangeException("files", "HOW THE FUCK DID YOU MAKE THIS HAPPEN?????");
         }
     }
 }

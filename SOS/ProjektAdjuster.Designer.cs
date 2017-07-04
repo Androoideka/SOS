@@ -50,41 +50,10 @@
             this.ClientSize = new System.Drawing.Size(189, 266);
             this.Controls.Add(this.button1);
             this.Name = "ProjektAdjuster";
-            this.Text = "ProjektAdjuster";
+            this.Text = "Soundbanks";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProjektAdjuster_FormClosing);
             this.Load += new System.EventHandler(this.ProjektAdjuster_Load);
             this.ResumeLayout(false);
-
-            lb[0] = new System.Windows.Forms.Label();
-            lb[0].Top = button1.Bottom;
-            lb[0].Left = button1.Left;
-            lb[0].Text = "Instrument 1";
-            Controls.Add(lb[0]);
-            cb[0] = new System.Windows.Forms.ComboBox();
-            cb[0].Top = button1.Bottom + 12;
-            cb[0].Left = button1.Left;
-            cb[0].Width = ClientRectangle.Width - (2 * cb[0].Left);
-            cb[0].AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            cb[0].AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            Controls.Add(cb[0]);
-            cb[0].BringToFront();
-            for (int i = 1; i < 128; i++)
-            {
-                lb[i] = new System.Windows.Forms.Label();
-                lb[i].Top = cb[i - 1].Bottom;
-                lb[i].Left = lb[i - 1].Left;
-                lb[i].Text = "Instrument " + (i + 1);
-                Controls.Add(lb[i]);
-                cb[i] = new System.Windows.Forms.ComboBox();
-                cb[i].Top = cb[i - 1].Bottom + 12;
-                cb[i].Left = cb[i - 1].Left;
-                cb[i].Width = cb[i - 1].Width;
-                cb[i].AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-                cb[i].AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-                Controls.Add(cb[i]);
-                cb[i].BringToFront();
-            }
-
         }
 
         #endregion

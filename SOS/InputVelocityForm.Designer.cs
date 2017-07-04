@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.SuspendLayout();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -56,14 +57,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(464, 101);
-            this.Controls.Add(this.trackBar1);
-            this.Controls.Add(this.progressBar1);
+            this.ClientSize = new System.Drawing.Size(284, 262);
             this.Name = "InputVelocityForm";
-            this.Text = "InputVelocityForm";
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            this.Text = "Velocity Brush";
             this.ResumeLayout(false);
-            this.PerformLayout();
+
         }
 
         #endregion

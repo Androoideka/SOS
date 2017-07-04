@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Timers;
 
 namespace SOS
 {
-    class Projekt
+    public class Projekt
     {
-        public Timer tmr;
+        private Timer tmr;
         public Track[] tr;
         public static Soundbank[] sb;
         public Projekt()
         {
             tr = new Track[16];
-            tmr = new Timer();
-            tmr.Interval = 125;
-            tmr.Tick += TmrTick;
-            CreateAllInstruments();
+            tmr = new Timer(125);
+            tmr.Elapsed += TmrTick;
         }
         private void TmrTick(object sender, EventArgs e)
         {
@@ -27,7 +25,7 @@ namespace SOS
                     j++;
             }
             if (j == 16)
-                tmr.Enabled = false;
+                tmr.Stop();
         }
         public void Reset()
         {
@@ -36,20 +34,39 @@ namespace SOS
                 if (tr[i] != null)
                     tr[i].ResetTrackPosition();
             }
+            tmr.Start();
+        }
+        public static void SetSoundbanks()
+        {
+            ProjektAdjuster pa = new ProjektAdjuster();
+            pa.ShowDialog();
         }
         public static void CreateAllInstruments()
         {
             sb = new Soundbank[128];
             for (int i = 0; i < 128; i++)
-                sb[i] = new Soundbank("WDS", new string[] { @"C:\Windows\Media\tada.wav"});
+                sb[i] = new Soundbank("WDS", new string[] { @"C:\Windows\Media\tada.wav" });
         }
-        public int GetTempo()
+        public double GetTempo()
         {
-            return 60000 / tmr.Interval / 4;
+            return 60000d / tmr.Interval / 4d;
         }
-        public void SetTempo(int bpm)
+        public void Tempo(int p)
         {
-            tmr.Interval = 60000 / bpm / 4;
+            SetTempo(p == 0 ? 208 : (p == 1 ? 200 : (p == 2 ? 168 : (p == 3 ? 120 : (p == 4 ? 108 : (p == 5 ? 76 : (p == 6 ? 66 : 40)))))));
+        }
+        public void SaveToTrack(int i, byte[,] p, int n)
+        {
+            tr[i].ImportPattern(p, n);
+        }
+        public void DeleteTrack(int i)
+        {
+            for (int j = i+1; j < 16; j++)
+                tr[j - 1] = tr[j];
+        }
+        private void SetTempo(int bpm)
+        {
+            tmr.Interval = 60000d / bpm / 4d;
         }
     }
 }

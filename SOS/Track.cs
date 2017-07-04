@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using NAudio.Wave;
 
 namespace SOS
 {
@@ -14,16 +13,16 @@ namespace SOS
             e = new List<Event>();
             cas = new string[128];
         }
-        public void ImportPattern(byte[,] a, int n)
+        internal void ImportPattern(byte[,] a, int n)
         {
             e.Clear();
             byte[] lastVal = new byte[129];
             for (int i = 0; i < 129; i++)
-                lastVal[i] = 0;
+                lastVal[i] = 255;
             byte sixteenthsSinceLastMessage = 0;
             for (int i = 0; i < n; i++)
             {
-                for (int j = a.GetLength(0)-1; j >= 0; j--)
+                for (int j = a.GetLength(0) - 1; j >= 0; j--)
                 {
                     if (lastVal[j] != a[j, i])
                     {
@@ -67,8 +66,8 @@ namespace SOS
                 count += e[i].getDT(1);
                 if (e[i].eventType == 0)
                     nizSablon[(e[i] as MIDIEvent).note, count] = (e[i] as MIDIEvent).velocity;
-                else if ((e[i] as MetaEvent).patch != 254)
-                    nizSablon[128, count] = (byte)((e[i] as MetaEvent).patch + 1);
+                else if ((e[i] as MetaEvent).patch != 255)
+                    nizSablon[128, count] = (byte)((e[i] as MetaEvent).patch);
 
             }
             for (int i = 1; i < n; i++)
@@ -89,21 +88,19 @@ namespace SOS
         }
         public void Play()
         {
-            while ((e[eventNum].eventType != 255 || (e[eventNum] as MetaEvent).patch != 254) && count == e[eventNum].getDT(1))
+            while ((e[eventNum].eventType != 255 || (e[eventNum] as MetaEvent).patch != 255) && count == e[eventNum].getDT(1))
             {
                 if (e[eventNum].eventType == 0)
                 {
                     if ((e[eventNum] as MIDIEvent).velocity != 0)
-                    {
                         AudioPlaybackEngine.Instance.PlaySound(cas[(e[eventNum] as MIDIEvent).note], (e[eventNum] as MIDIEvent).GetVolume());
-                    }
                 }
                 else
                     Load((e[eventNum] as MetaEvent).patch);
                 eventNum++;
                 count = 0;
             }
-            if (e[eventNum].eventType == 255 && (e[eventNum] as MetaEvent).patch == 254)
+            if (e[eventNum].eventType == 255 && (e[eventNum] as MetaEvent).patch == 255)
                 ended = true;
             count++;
         }
@@ -114,3 +111,4 @@ namespace SOS
         }
     }
 }
+

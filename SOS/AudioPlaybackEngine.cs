@@ -9,7 +9,7 @@ namespace SOS
         private readonly IWavePlayer outputDevice;
         private readonly MixingSampleProvider mixer;
 
-        public AudioPlaybackEngine(int sampleRate = 44100, int channelCount = 2)
+        public AudioPlaybackEngine(int sampleRate = 11025, int channelCount = 2)
         {
             outputDevice = new WaveOutEvent();
             mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channelCount));
@@ -21,12 +21,9 @@ namespace SOS
         public void PlaySound(string fileName, float vol)
         {
             var input = new AudioFileReader(fileName);
+            //input = WaveFileWriter.CreateWaveFile16(fileName, new WdlResamplingSampleProvider(input, 44100));
             input.Volume = vol;
             AddMixerInput(new AutoDisposeFileReader(input));
-        }
-        public void PlaySound(AudioFileReader sound)
-        {
-            AddMixerInput(new AutoDisposeFileReader(sound));
         }
         private ISampleProvider ConvertToRightChannelCount(ISampleProvider input)
         {
@@ -41,11 +38,6 @@ namespace SOS
             throw new NotImplementedException("Not yet implemented this channel count conversion");
         }
 
-        public void PlaySound(CachedSound sound)
-        {
-            AddMixerInput(new CachedSoundSampleProvider(sound));
-        }
-
         private void AddMixerInput(ISampleProvider input)
         {
             mixer.AddMixerInput(ConvertToRightChannelCount(input));
@@ -56,6 +48,6 @@ namespace SOS
             outputDevice.Dispose();
         }
 
-        public static readonly AudioPlaybackEngine Instance = new AudioPlaybackEngine(44100, 2);
+        public static readonly AudioPlaybackEngine Instance = new AudioPlaybackEngine(11025, 2);
     }
 }
