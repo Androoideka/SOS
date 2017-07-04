@@ -5,25 +5,21 @@ namespace SOS
 {
     class Projekt
     {
-        public Timer tmr;
+        Timer tmr;
         public Track[] tr;
-        public Soundbank[] sb;
-        public int sbLength;
+        public static Soundbank[] sb = new Soundbank[128];
+        public static int sbLength;
         int[] count, eventNum;
         public Projekt()
         {
             tr = new Track[16];
-            sb = new Soundbank[1024];
-            sb[0] = new Soundbank("Drum", new string[] { @"C:\Users\andro\Desktop\Piano\1.wav" });
-            sb[1] = new Soundbank("Drum", new string[] { @"C:\Users\andro\Desktop\Piano\1.wav", @"C:\Users\andro\Desktop\Piano\1.wav" });
-            sbLength +=2;
             tmr = new Timer();
             tmr.Interval = 125;
-            tmr.Tick += tmrTick;
+            tmr.Tick += TmrTick;
             count = new int[16];
             eventNum = new int[16];
         }
-        private void tmrTick(object sender, EventArgs e)
+        private void TmrTick(object sender, EventArgs e)
         {
             for (int i = 0; i < 16; i++)
             {
@@ -31,17 +27,34 @@ namespace SOS
                 {
                     while (tr[i].e[eventNum[i]].note != 255 && count[i] == tr[i].e[eventNum[i]].getDT(tmr.Interval))
                     {
-                        tr[i].instrument.note[tr[i].e[eventNum[i]].note].Volume = tr[i].e[eventNum[i]].getVolume();
+                        /*tr[i].instrument.note[tr[i].e[eventNum[i]].note].Volume = tr[i].e[eventNum[i]].getVolume();
                         if (tr[i].instrument.note[tr[i].e[eventNum[i]].note].Volume != 0)
                             tr[i].instrument.note[tr[i].e[eventNum[i]].note].Play();
                         else
-                            tr[i].instrument.note[tr[i].e[eventNum[i]].note].Stop();
+                            tr[i].instrument.note[tr[i].e[eventNum[i]].note].Stop();*/
                         eventNum[i]++;
                         count[i] = 0;
                     }
                     count[i] += tmr.Interval;
                 }
             }
+        }
+        public static Soundbank FindInstrumentWithName(string p)
+        {
+            for (int i = 0; i < sbLength; i++)
+            {
+                if (sb[i].ime == p)
+                    return sb[i];
+            }
+            throw new System.ArgumentException("MISSING INSTRUMENT", "combobox instrument");
+        }
+        public int GetTempo()
+        {
+            return 60000 / tmr.Interval / 4;
+        }
+        public void SetTempo(int bpm)
+        {
+            tmr.Interval = 60000 / bpm / 4;
         }
     }
 }

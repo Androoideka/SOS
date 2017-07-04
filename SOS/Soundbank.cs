@@ -13,7 +13,8 @@ namespace SOS
             for (int i = 0; i < note.Length; i++)
             {
                 note[i] = new MediaPlayer();
-                note[i].Open(new System.Uri(files[i]));
+                //will probably import managed directx and use that
+                //note[i].Open(new System.Uri(files[i]));
             }
         }
     }

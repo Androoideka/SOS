@@ -13,13 +13,14 @@ namespace SOS
         public PrikazTrake(Rectangle form, int p, bool t)
         {
             trInst = new ComboBox();
-            trInst.Top = p * 64;
+            trInst.Top = 30 + p * 64;
             trInst.Left = 0;
             trInst.Font = new Font("Arial", 32f);
             trInst.Width = form.Width / 5;
             trInst.Tag = p;
             trInst.DropDownStyle = ComboBoxStyle.DropDownList;
             trInst.Enabled = true;
+            SetInstruments();
 
             trComp = new DataGridView();
             trComp.Tag = p;
@@ -30,7 +31,8 @@ namespace SOS
             trComp.AllowUserToAddRows = false;
             trComp.AllowUserToDeleteRows = false;
             trComp.ScrollBars = ScrollBars.Both;
-            trComp.Enabled = true;
+            trComp.DoubleBuffered(true);
+            trComp.Enabled = false;
             szCell = form.Width / 16;
 
             trLng = new NumericUpDown();
@@ -41,6 +43,7 @@ namespace SOS
             trLng.Maximum = decimal.MaxValue;
             trLng.Enabled = false;
 
+            trInst.SelectedIndexChanged += SelectInstrument;
             trComp.CellMouseMove += BeatTransform;
             trLng.ValueChanged += ValChange;
 
@@ -84,7 +87,7 @@ namespace SOS
         {
             if (e.RowIndex != -1 && e.ColumnIndex != -1 && e.Button != MouseButtons.None)
             {
-                if (e.Button == MouseButtons.Left && trComp[e.ColumnIndex, 0].Style.BackColor != Color.Gold)
+                if (e.Button == MouseButtons.Left && trComp[e.ColumnIndex, e.RowIndex].Style.BackColor != Color.Gold)
                     trComp[e.ColumnIndex, e.RowIndex].Value = 64;
                 else if (e.Button == MouseButtons.Right)
                     trComp[e.ColumnIndex, e.RowIndex].Value = 0;
@@ -111,6 +114,43 @@ namespace SOS
             else
                 ChangeColor(Color.Gray, loc1, loc2);
         }
+        public void SetInstruments(string p)
+        {
+            trInst.Items.Clear();
+            for (int i = 0; i < Projekt.sbLength; i++)
+                trInst.Items.Add((i + 1) + ". " + Projekt.sb[i].ime);
+            trInst.SelectedIndex = GetInstrument(p);
+        }
+        public void SetInstruments()
+        {
+            trInst.Items.Clear();
+            for (int i = 0; i < Projekt.sbLength; i++)
+                trInst.Items.Add((i + 1) + ". " + Projekt.sb[i].ime);
+        }
+        private void SelectInstrument(object sender, EventArgs e)
+        {
+            int brojInst = trInst.SelectedIndex;
+            int tag = Convert.ToInt32((sender as ComboBox).Tag);
+            for (int i = 0; i < Projekt.sbLength; i++)
+            {
+                if (Projekt.sb[i].note.Length != Projekt.sb[brojInst].note.Length)
+                    (sender as ComboBox).Items.Remove(i + ". " + Projekt.sb[i].ime);
+            }
+            trComp.Enabled = true;
+            if (Projekt.sb[brojInst].note.Length == 1)
+                SetupTrComp(0, 16, 1);
+        }
+        private int GetInstrument(string p)
+        {
+            for (int i = 0; i < trInst.Items.Count; i++)
+            {
+                string temp = trInst.Items[i].ToString();
+                temp = temp.Substring(temp.IndexOf(" ") + 1);
+                if (temp == p)
+                    return i;
+            }
+            throw new System.ArgumentException("MISSING INSTRUMENT", "combobox instrument");
+        }
         private void ValChange(object sender, EventArgs e)
         {
             int tempCol = trComp.ColumnCount;
@@ -127,13 +167,13 @@ namespace SOS
                 trComp.ColumnCount = Convert.ToInt32(trLng.Value);
             }
         }
-        public byte[,] Generate(DataGridView dgv)
+        public byte[,] Generate()
         {
-            byte[,] t = new byte[dgv.RowCount, dgv.ColumnCount];
-            for (int i = 0; i < dgv.RowCount; i++)
+            byte[,] t = new byte[trComp.RowCount, trComp.ColumnCount];
+            for (int i = 0; i < trComp.RowCount; i++)
             {
-                for (int j = 0; j < dgv.ColumnCount; j++)
-                    t[i, j] = Convert.ToByte(dgv[j, i].Value);
+                for (int j = 0; j < trComp.ColumnCount; j++)
+                    t[i, j] = Convert.ToByte(trComp[j, i].Value);
             }
             return t;
         }

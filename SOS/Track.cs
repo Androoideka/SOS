@@ -4,10 +4,10 @@ namespace SOS
 {
     public class Track
     {
-        public struct MIDIMessage
+        internal struct MIDIMessage
         {
             private byte deltaTime;
-            private byte velocity;
+            public readonly byte velocity;
             public readonly byte note;
             public MIDIMessage(byte vel, byte no, byte deltatime)
             {
@@ -15,25 +15,13 @@ namespace SOS
                 velocity = vel;
                 note = no;
             }
-            public double getVolume()
-            {
-                return 1d / 127d * velocity;
-            }
-            public byte getVelocity()
-            {
-                return velocity;
-            }
             public int getDT(int interval)
             {
                 return deltaTime * interval;
             }
         }
-        public List<MIDIMessage> e = new List<MIDIMessage>();
+        internal List<MIDIMessage> e = new List<MIDIMessage>();
         public Soundbank instrument;
-        public Track(Soundbank inst)
-        {
-            instrument = inst;
-        }
         public void ImportPattern(byte[,] a, int n)
         {
             e.Clear();
@@ -82,7 +70,7 @@ namespace SOS
             {
                 count += e[i].getDT(1);
                 if(e[i].note != 255)
-                    nizSablon[e[i].note, count] = e[i].getVelocity();
+                    nizSablon[e[i].note, count] = e[i].velocity;
             }
             for (int i = 1; i < n; i++)
             {
