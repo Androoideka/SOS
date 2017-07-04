@@ -2,26 +2,18 @@
 
 namespace SOS
 {
-    class Soundbank
+    public class Soundbank
     {
-        public bool percussion;
         public string ime;
         public MediaPlayer[] note; 
-        public int n;
-        public Soundbank(string p, bool yes)
+        public Soundbank(string p, string[] files)
         {
-            percussion = yes;
             ime = p;
-            if (percussion)
+            note = new MediaPlayer[files.Length];
+            for (int i = 0; i < note.Length; i++)
             {
-                note = new MediaPlayer[1];
-                note[0] = new MediaPlayer();
-            }
-            else
-            {
-                note = new MediaPlayer[n];
-                for (int i = 0; i < n; i++)
-                    note[i] = new MediaPlayer();
+                note[i] = new MediaPlayer();
+                note[i].Open(new System.Uri(files[i]));
             }
         }
     }

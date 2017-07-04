@@ -51,6 +51,7 @@
             this.Name = "Sequencer";
             this.Text = "Sequencer";
             this.Load += new System.EventHandler(this.Sequencer_Load);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Sequencer_MouseUp);
             this.ResumeLayout(false);
 
         }

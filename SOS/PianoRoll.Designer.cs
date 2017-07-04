@@ -28,28 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.Notes = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Timer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
-            // 
-            // listView1
-            // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Notes,
-            this.Timer});
-            this.listView1.Location = new System.Drawing.Point(13, 13);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(983, 705);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
             // 
             // PianoRoll
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 730);
-            this.Controls.Add(this.listView1);
+            this.ClientSize = new System.Drawing.Size(1008, 731);
             this.Name = "PianoRoll";
             this.Text = "PianoRoll";
             this.Load += new System.EventHandler(this.PianoRoll_Load);
@@ -58,9 +43,5 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader Notes;
-        private System.Windows.Forms.ColumnHeader Timer;
     }
 }
