@@ -11,7 +11,7 @@
             velocity = vel;
             note = no;
         }
-        public float ChangeVolume()
+        public float GetVolume()
         {
             return 1f / 127f * velocity;
         }

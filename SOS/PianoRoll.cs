@@ -203,7 +203,17 @@ namespace SOS
             InsertIntoDG(p, dgv2, dgv1.RowCount, dgv1.RowCount + dgv2.RowCount, false);
             trLng.Minimum = 16;
         }
+
+        private void PianoRoll_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveTrack();
+        }
+
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveTrack();
+        }
+        private void SaveTrack()
         {
             t.ImportPattern(Generate(trComp, trInst), trComp.ColumnCount);
         }

@@ -74,7 +74,13 @@ namespace SOS
 
         private void playStopToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            prj.Reset();
             prj.tmr.Enabled = true;
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
         }
     }
 }

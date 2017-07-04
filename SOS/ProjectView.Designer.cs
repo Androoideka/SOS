@@ -101,17 +101,18 @@
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.openToolStripMenuItem.Text = "Open";
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.saveAsToolStripMenuItem.Text = "Save as";
             // 
             // editToolStripMenuItem
@@ -136,7 +137,7 @@
             this.larghettoToolStripMenuItem,
             this.largoToolStripMenuItem});
             this.tempoToolStripMenuItem.Name = "tempoToolStripMenuItem";
-            this.tempoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tempoToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.tempoToolStripMenuItem.Text = "Tempo";
             // 
             // prestissimoToolStripMenuItem
@@ -223,7 +224,7 @@
             this.toolStripMenuItem16,
             this.toolStripMenuItem17});
             this.deleteTrackToolStripMenuItem.Name = "deleteTrackToolStripMenuItem";
-            this.deleteTrackToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteTrackToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.deleteTrackToolStripMenuItem.Text = "Delete Track";
             // 
             // toolStripMenuItem2
@@ -325,7 +326,7 @@
             // playStopToolStripMenuItem
             // 
             this.playStopToolStripMenuItem.Name = "playStopToolStripMenuItem";
-            this.playStopToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.playStopToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.playStopToolStripMenuItem.Text = "Play/Stop";
             this.playStopToolStripMenuItem.Click += new System.EventHandler(this.playStopToolStripMenuItem_Click);
             // 
@@ -340,7 +341,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ProjectView";
-            this.Text = "Sequencer";
+            this.Text = "SOS";
             this.Load += new System.EventHandler(this.ProjectView_Load);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ProjectView_MouseUp);
             this.menuStrip1.ResumeLayout(false);

@@ -89,6 +89,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Soundbank.cs" />
     <Compile Include="Track.cs" />
+    <EmbeddedResource Include="PianoRoll.resx">
+      <DependentUpon>PianoRoll.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProjectView.resx">
       <DependentUpon>ProjectView.cs</DependentUpon>
     </EmbeddedResource>

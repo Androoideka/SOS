@@ -8,15 +8,12 @@ namespace SOS
         public Timer tmr;
         public Track[] tr;
         public static Soundbank[] sb;
-        int[] count, eventNum;
         public Projekt()
         {
             tr = new Track[16];
             tmr = new Timer();
-            tmr.Interval = 500;
+            tmr.Interval = 125;
             tmr.Tick += TmrTick;
-            count = new int[16];
-            eventNum = new int[16];
             CreateAllInstruments();
         }
         private void TmrTick(object sender, EventArgs e)
@@ -31,6 +28,14 @@ namespace SOS
             }
             if (j == 16)
                 tmr.Enabled = false;
+        }
+        public void Reset()
+        {
+            for (int i = 0; i < 16; i++)
+            {
+                if (tr[i] != null)
+                    tr[i].ResetTrackPosition();
+            }
         }
         public static void CreateAllInstruments()
         {

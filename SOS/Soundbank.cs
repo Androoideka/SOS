@@ -1,6 +1,4 @@
-﻿using System.Media;
-
-namespace SOS
+﻿namespace SOS
 {
     class Soundbank
     {

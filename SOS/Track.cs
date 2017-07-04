@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
+using NAudio.Wave;
 
 namespace SOS
 {
     public class Track
     {
         private List<Event> e;
-        private CachedSound[] cac = new CachedSound[128];
-        private int count, eventNum, instSel;
-        public bool ended;
+        private int count, eventNum;
+        private string[] cas;
+        internal bool ended;
         public Track()
         {
             e = new List<Event>();
+            cas = new string[128];
         }
         public void ImportPattern(byte[,] a, int n)
         {
@@ -66,7 +68,7 @@ namespace SOS
                 if (e[i].eventType == 0)
                     nizSablon[(e[i] as MIDIEvent).note, count] = (e[i] as MIDIEvent).velocity;
                 else if ((e[i] as MetaEvent).patch != 254)
-                    nizSablon[128, count] = (e[i] as MetaEvent).patch;
+                    nizSablon[128, count] = (byte)((e[i] as MetaEvent).patch + 1);
 
             }
             for (int i = 1; i < n; i++)
@@ -79,29 +81,36 @@ namespace SOS
             }
             return nizSablon;
         }
+        public void ResetTrackPosition()
+        {
+            ended = false;
+            count = 0;
+            eventNum = 0;
+        }
         public void Play()
         {
             while ((e[eventNum].eventType != 255 || (e[eventNum] as MetaEvent).patch != 254) && count == e[eventNum].getDT(1))
             {
                 if (e[eventNum].eventType == 0)
                 {
-                    if ((e[eventNum] as MIDIEvent).velocity == 0)
-                        AudioPlaybackEngine.Instance.Dispose();
-                    else
-                        AudioPlaybackEngine.Instance.PlaySound(Projekt.sb[instSel].note[(e[eventNum] as MIDIEvent).note]);
+                    if ((e[eventNum] as MIDIEvent).velocity != 0)
+                    {
+                        AudioPlaybackEngine.Instance.PlaySound(cas[(e[eventNum] as MIDIEvent).note], (e[eventNum] as MIDIEvent).GetVolume());
+                    }
                 }
                 else
                     Load((e[eventNum] as MetaEvent).patch);
                 eventNum++;
                 count = 0;
             }
+            if (e[eventNum].eventType == 255 && (e[eventNum] as MetaEvent).patch == 254)
+                ended = true;
             count++;
         }
         private void Load(int i)
         {
-            instSel = i;
-            //for (int j = 0; j < 128; j++)
-                //cac[j] = new CachedSound(Projekt.sb[i].note[j]);
+            for (int j = 0; j < 128; j++)
+                cas[j] = Projekt.sb[i].note[j];
         }
     }
 }

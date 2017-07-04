@@ -76,11 +76,13 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "PianoRoll";
             this.Text = "PianoRoll";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PianoRoll_FormClosing);
             this.Load += new System.EventHandler(this.PianoRoll_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
