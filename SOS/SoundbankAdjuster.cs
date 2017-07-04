@@ -8,8 +8,8 @@ namespace SOS
 {
     public partial class SoundbankAdjuster : Form
     {
-        Label[] lb = new Label[128];
-        ComboBox[] cb = new ComboBox[128];
+        Label[] lb = new Label[10];
+        ComboBox[] cb = new ComboBox[10];
         public SoundbankAdjuster()
         {
             InitializeComponent();
@@ -105,7 +105,6 @@ namespace SOS
         }
         private void SoundbankAdjuster_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Projekt.sb = new Soundbank[128];
             for (int i = 0; i < cb.Length; i++)
                 Projekt.sb[i] = new Soundbank(cb[i].Items[cb[i].SelectedIndex].ToString(), Directory.GetFiles(Path.Combine(Application.StartupPath, cb[i].Items[cb[i].SelectedIndex].ToString())));
         }
