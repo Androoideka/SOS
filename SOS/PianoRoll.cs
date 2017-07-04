@@ -35,7 +35,8 @@ namespace SOS
             paintInst.Left = trLng.Right + ClientRectangle.Width / 128;
             paintInst.Width = ClientRectangle.Width / 5;
             paintInst.Font = new Font("Arial", 32f);
-            paintInst.DropDownStyle = ComboBoxStyle.DropDownList;
+            paintInst.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            paintInst.AutoCompleteSource = AutoCompleteSource.ListItems;
             paintInst.Enabled = true;
             SetInstruments(paintInst);
 
@@ -85,9 +86,9 @@ namespace SOS
         public void SetInstruments(ComboBox cb)
         {
             cb.Items.Clear();
-            cb.Items.Add("0. None");
-            for (int i = 0; i < Projekt.sbLength; i++)
-                cb.Items.Add((i + 1) + ". " + Projekt.sb[i].ime);
+            cb.Items.Add("None");
+            for (int i = 0; i < Projekt.sb.Length; i++)
+                cb.Items.Add(Projekt.sb[i].ime);
             cb.SelectedIndex = 0;
         }
         private void ValChange(object sender, EventArgs e)
@@ -123,7 +124,7 @@ namespace SOS
                 }
                 trInst.Rows[0].Height = szCell;
                 trInst.Columns[i].Width = szCell;
-                trInst[i, 0].Value = "0. None";
+                trInst[i, 0].Value = "0";
             }
             trLng.Enabled = true;
         }
@@ -162,11 +163,7 @@ namespace SOS
         private void InstrumentPaint(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex != -1 && e.ColumnIndex != -1 && e.Button != MouseButtons.None)
-                trInst[e.ColumnIndex, 0].Value = paintInst.Items[paintInst.SelectedIndex].ToString();
-        }
-        private int GetInstrumentIndex(string p)
-        {
-            return Convert.ToInt32(p.Substring(0, p.IndexOf(".")));
+                trInst[e.ColumnIndex, 0].Value = paintInst.SelectedIndex;
         }
         public byte[,] Generate()
         {
@@ -176,7 +173,7 @@ namespace SOS
                 for (int j = 0; j < trComp.ColumnCount; j++)
                 {
                     if (i == 128)
-                        t[i, j] = Convert.ToByte(GetInstrumentIndex(trInst[j, 0].Value.ToString()));
+                        t[i, j] = Convert.ToByte((trInst[j, 0].Value));
                     else
                         t[i, j] = Convert.ToByte(trComp[j, i].Value);
                 }
@@ -192,10 +189,7 @@ namespace SOS
                 {
                     if (j == 128)
                     {
-                        if (p[j, i] == 0)
-                            trInst[i, 0].Value = "0. None";
-                        else
-                            trInst[i, 0].Value = p[j, i] + ". " + Projekt.sb[(p[j, i] - 1)].ime;
+                        trInst[i, 0].Value = p[j, i];
                     }
                     else
                     {

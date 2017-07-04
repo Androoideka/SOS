@@ -8,7 +8,6 @@ namespace SOS
         Timer tmr;
         public Track[] tr;
         public static Soundbank[] sb;
-        public static int sbLength;
         int[] count, eventNum;
         public Projekt()
         {
@@ -18,6 +17,7 @@ namespace SOS
             tmr.Tick += TmrTick;
             count = new int[16];
             eventNum = new int[16];
+            CreateAllInstruments();
         }
         private void TmrTick(object sender, EventArgs e)
         {
@@ -34,9 +34,15 @@ namespace SOS
                 }
             }
         }
+        public static void CreateAllInstruments()
+        {
+            sb = new Soundbank[128];
+            for (int i = 0; i < 128; i++)
+                sb[i] = new Soundbank("Drum", new string[] { @"C:\Users\andro\Desktop\BDSOM Experimental\BDSOM\bin\Debug\Drum\t.wav" });
+        }
         public static Soundbank FindInstrumentWithName(string p)
         {
-            for (int i = 0; i < sbLength; i++)
+            for (int i = 0; i < sb.Length; i++)
             {
                 if (sb[i].ime == p)
                     return sb[i];
