@@ -3,16 +3,16 @@ using System.Windows.Forms;
 
 namespace SOS
 {
-    public partial class Sequencer : Form
+    public partial class ProjectView : Form
     {
         Projekt prj = new Projekt();
         Button[] b = new Button[16];
         int n;
-        public Sequencer()
+        public ProjectView()
         {
             InitializeComponent();
         }
-        private void Sequencer_Load(object sender, EventArgs e)
+        private void ProjectView_Load(object sender, EventArgs e)
         {
             SetCheckedMenuItem();
             for (int i = 0; i < 16; i++)
@@ -45,7 +45,7 @@ namespace SOS
             pr.ShowDialog();
             prj.tr[i] = pr.t;
         }
-        private void Sequencer_MouseUp(object sender, MouseEventArgs e)
+        private void ProjectView_MouseUp(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Right)
             {
@@ -70,14 +70,6 @@ namespace SOS
                     (tempoToolStripMenuItem.DropDownItems[i] as ToolStripMenuItem).CheckState = CheckState.Unchecked;
             }
             prj.SetTempo(p == 0 ? 208 : (p == 1 ? 200 : (p == 2 ? 168 : (p == 3 ? 120 : (p == 4 ? 108 : (p == 5 ? 76 : (p == 6 ? 66 : 40)))))));
-        }
-
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void toolStripMenuItem18_Click(object sender, EventArgs e)
-        {
         }
     }
 }

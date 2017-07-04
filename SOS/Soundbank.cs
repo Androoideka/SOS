@@ -1,11 +1,11 @@
-﻿using System.Windows.Media;
+﻿using System.Media;
 
 namespace SOS
 {
-    public class Soundbank
+    class Soundbank
     {
         public string ime;
-        public string[] note; 
+        public string[] note;
         public Soundbank(string p, string[] files)
         {
             ime = p;

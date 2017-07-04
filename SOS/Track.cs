@@ -4,7 +4,12 @@ namespace SOS
 {
     public class Track
     {
-        internal List<Event> e = new List<Event>();
+        internal List<Event> e;
+        private int count, eventNum;
+        public Track()
+        {
+            e = new List<Event>();
+        }
         public void ImportPattern(byte[,] a, int n)
         {
             e.Clear();
@@ -18,17 +23,20 @@ namespace SOS
                 {
                     if (lastVal[j] != a[j, i])
                     {
-                        if (j == 128)
+                        if (j == 0)
                             e.Add(new MetaEvent(a[j, i], sixteenthsSinceLastMessage));
                         else
-                            e.Add(new MIDIEvent(a[j, i], j, sixteenthsSinceLastMessage));
+                        {
+                            byte t = (byte)(j - 1);
+                            e.Add(new MIDIEvent(a[j, i], t, sixteenthsSinceLastMessage));
+                        }
                         lastVal[j] = a[j, i];
                         sixteenthsSinceLastMessage = 0;
                     }
                 }
                 sixteenthsSinceLastMessage++;
             }
-            e.Add(new MIDIEvent(0, 255, sixteenthsSinceLastMessage));
+            e.Add(new MetaEvent(255, sixteenthsSinceLastMessage));
         }
         private int lengthOfTrack()
         {
@@ -41,7 +49,7 @@ namespace SOS
         {
             int count = 0;
             int n = lengthOfTrack();
-            byte[,] nizSablon = new byte[129,n];
+            byte[,] nizSablon = new byte[129, n];
             for (int i = 0; i < 129; i++)
             {
                 for (int j = 0; j < n; j++)
@@ -55,10 +63,11 @@ namespace SOS
             for (int i = 0; i < e.Count; i++)
             {
                 count += e[i].getDT(1);
-                if (e[i].eventType == 255)
-                    nizSablon[128, count] = (e[i] as MetaEvent).patch;
-                else if((e[i] as MIDIEvent).note != 255)
+                if (e[i].eventType == 0)
                     nizSablon[(e[i] as MIDIEvent).note, count] = (e[i] as MIDIEvent).velocity;
+                else if ((e[i] as MetaEvent).patch != 255)
+                    nizSablon[128, count] = (e[i] as MetaEvent).patch;
+
             }
             for (int i = 1; i < n; i++)
             {
@@ -69,6 +78,10 @@ namespace SOS
                 }
             }
             return nizSablon;
+        }
+        public bool Play()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

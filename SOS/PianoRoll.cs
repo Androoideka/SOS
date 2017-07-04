@@ -25,9 +25,9 @@ namespace SOS
             trLng = new NumericUpDown();
             trLng.Top = menuStrip1.Bottom;
             trLng.Font = new Font("Arial", 32f);
-            trLng.Minimum = 16;
             trLng.Maximum = decimal.MaxValue;
             trLng.Enabled = true;
+            trLng.Value = 0;
             trLng.ValueChanged += ValChange;
 
             paintInst = new ComboBox();
@@ -81,7 +81,10 @@ namespace SOS
             if (t != null)
                 LoadIn(t.ExportPattern());
             else
+            {
                 t = new Track();
+                trLng.Minimum = 16;
+            }
         }
         public void SetInstruments(ComboBox cb)
         {
@@ -172,16 +175,17 @@ namespace SOS
             {
                 for (int j = 0; j < trComp.ColumnCount; j++)
                 {
-                    if (i == 128)
+                    if (i == 0)
                         t[i, j] = Convert.ToByte((trInst[j, 0].Value));
                     else
-                        t[i, j] = Convert.ToByte(trComp[j, i].Value);
+                        t[i, j] = Convert.ToByte(trComp[j, i - 1].Value);
                 }
             }
             return t;
         }
         public void LoadIn(byte[,] p)
         {
+            trLng.Value = p.GetLength(1);
             trComp.ColumnCount = p.GetLength(1);
             for (int i = 0; i < p.GetLength(1); i++)
             {
@@ -198,7 +202,6 @@ namespace SOS
                     }
                 }
             }
-            trLng.Value = trComp.ColumnCount;
         }
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {

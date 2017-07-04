@@ -31,7 +31,7 @@ namespace SOS
             for (int i = 1; i < 128; i++)
             {
                 lb[i] = new Label();
-                lb[i].Top = cb[i-1].Bottom;
+                lb[i].Top = cb[i - 1].Bottom;
                 lb[i].Left = lb[i - 1].Left;
                 lb[i].Text = "Instrument " + (i + 1);
                 Controls.Add(lb[i]);
@@ -48,7 +48,7 @@ namespace SOS
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            if(folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
                 //Copied from MSDN
                 string path = Path.Combine(Application.StartupPath, Path.GetFileName(folderBrowserDialog1.SelectedPath));

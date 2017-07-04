@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Reflection;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace SOS
 {
-    static class AddProperty
+    static class DoubleBuffering
     {
         public static void DoubleBuffered(this DataGridView dgv, bool setting)
         {

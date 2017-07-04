@@ -21,17 +21,13 @@ namespace SOS
         }
         private void TmrTick(object sender, EventArgs e)
         {
+            int j = 0;
             for (int i = 0; i < 16; i++)
             {
-                if (tr[i] != null)
-                {
-                    while ((tr[i].e[eventNum[i]].eventType != 255 && (tr[i].e[eventNum[i]] as MetaEvent).patch != 255) && count[i] == tr[i].e[eventNum[i]].getDT(tmr.Interval))
-                    {
-                        eventNum[i]++;
-                        count[i] = 0;
-                    }
-                    count[i] += tmr.Interval;
-                }
+                if (tr[i] == null || tr[i].Play())
+                    j++;
+                if (j == 16)
+                    tmr.Enabled = false;
             }
         }
         public static void CreateAllInstruments()
@@ -39,15 +35,6 @@ namespace SOS
             sb = new Soundbank[128];
             for (int i = 0; i < 128; i++)
                 sb[i] = new Soundbank("Drum", new string[] { @"C:\Users\andro\Desktop\BDSOM Experimental\BDSOM\bin\Debug\Drum\t.wav" });
-        }
-        public static Soundbank FindInstrumentWithName(string p)
-        {
-            for (int i = 0; i < sb.Length; i++)
-            {
-                if (sb[i].ime == p)
-                    return sb[i];
-            }
-            throw new System.ArgumentException("MISSING INSTRUMENT", "combobox instrument");
         }
         public int GetTempo()
         {

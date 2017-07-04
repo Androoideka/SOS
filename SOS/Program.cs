@@ -13,7 +13,7 @@ namespace SOS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Sequencer());
+            Application.Run(new ProjectView());
         }
     }
 }

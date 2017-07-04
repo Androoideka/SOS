@@ -2,7 +2,7 @@
 {
     class Event
     {
-        protected byte deltaTime;
+        protected int deltaTime;
         public byte eventType;
         public int getDT(int interval)
         {
