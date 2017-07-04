@@ -1,17 +1,18 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace SOS
 {
     public class Projekt
     {
-        private Timer tmr;
+        private System.Timers.Timer tmr;
         public Track[] tr;
         public static Soundbank[] sb;
         public Projekt()
         {
             tr = new Track[16];
-            tmr = new Timer(125);
+            tmr = new System.Timers.Timer(125);
             tmr.Elapsed += TmrTick;
         }
         private void TmrTick(object sender, EventArgs e)
@@ -20,7 +21,7 @@ namespace SOS
             for (int i = 0; i < 16; i++)
             {
                 if (tr[i] != null && !tr[i].ended)
-                    tr[i].Play();
+                    Parallel.Invoke(tr[i].Play);
                 else
                     j++;
             }
@@ -57,7 +58,7 @@ namespace SOS
         }
         public void DeleteTrack(int i)
         {
-            for (int j = i+1; j < 16; j++)
+            for (int j = i + 1; j < 16; j++)
                 tr[j - 1] = tr[j];
         }
         public void SetTempo(int p)

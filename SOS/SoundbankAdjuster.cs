@@ -52,7 +52,7 @@ namespace SOS
         }
         private void AddToCB(string[] p)
         {
-            for (int i = 0; i < 128; i++)
+            for (int i = 0; i < cb.Length; i++)
             {
                 cb[i].Items.Clear();
                 cb[i].Items.AddRange(p);
@@ -72,7 +72,7 @@ namespace SOS
         }
         private void CreateControls()
         {
-            for (int i = 0; i < 128; i++)
+            for (int i = 0; i < cb.Length; i++)
             {
                 lb[i] = new Label();
                 lb[i].Left = button1.Left;
@@ -85,15 +85,15 @@ namespace SOS
                 cb[i].AutoCompleteSource = AutoCompleteSource.ListItems;
                 Controls.Add(cb[i]);
                 cb[i].BringToFront();
-                if(i == 0)
+                if (i == 0)
                 {
                     lb[i].Top = button1.Bottom;
                     cb[i].Top = button1.Bottom + 12;
                 }
                 else
                 {
-                    lb[i].Top = cb[i-1].Bottom;
-                    cb[i].Top = cb[i-1].Bottom + 12;
+                    lb[i].Top = cb[i - 1].Bottom;
+                    cb[i].Top = cb[i - 1].Bottom + 12;
                 }
             }
         }
@@ -106,8 +106,9 @@ namespace SOS
         private void SoundbankAdjuster_FormClosing(object sender, FormClosingEventArgs e)
         {
             Projekt.sb = new Soundbank[128];
-            for (int i = 0; i < 128; i++)
+            for (int i = 0; i < cb.Length; i++)
                 Projekt.sb[i] = new Soundbank(cb[i].Items[cb[i].SelectedIndex].ToString(), Directory.GetFiles(Path.Combine(Application.StartupPath, cb[i].Items[cb[i].SelectedIndex].ToString())));
         }
     }
 }
+

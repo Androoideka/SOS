@@ -50,7 +50,7 @@
             this.ClientSize = new System.Drawing.Size(247, 497);
             this.Controls.Add(this.button1);
             this.Name = "SoundbankAdjuster";
-            this.Text = "SoundbankAdjuster";
+            this.Text = "Soundbank Adjuster";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SoundbankAdjuster_FormClosing);
             this.Load += new System.EventHandler(this.SoundbankAdjuster_Load);
             this.ResumeLayout(false);

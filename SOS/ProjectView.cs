@@ -21,7 +21,7 @@ namespace SOS
                 b[i] = new Button();
                 b[i].Top = button1.Top + i * 32;
                 b[i].Left = button1.Left;
-                b[i].Width = ClientRectangle.Width;
+                b[i].Width = ClientRectangle.Width - 2 * b[i].Left;
                 b[i].Tag = i;
                 b[i].Text = "Edit Track " + i;
                 b[i].Click += bClick;

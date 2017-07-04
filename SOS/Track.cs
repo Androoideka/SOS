@@ -95,11 +95,11 @@ namespace SOS
         {
             for (int i = 0; i < 128; i++)
             {
-                if(vel[i] != 0)
+                if (vel[i] != 0)
                     AudioPlaybackEngine.Instance.PlaySound(cas[i], vel[i]);
             }
         }
-        public void Play()
+        private void NextSetE()
         {
             while (!(e[eventNum].eventType == 255 && (e[eventNum] as PCEvent).patch == 255) && count == e[eventNum].getDT(1))
             {
@@ -111,10 +111,14 @@ namespace SOS
                 eventNum++;
                 count = 0;
             }
-            PlaySound();
             if (e[eventNum].eventType == 255 && (e[eventNum] as PCEvent).patch == 255 && e[eventNum].getDT(1) == count)
                 ended = true;
             count++;
+        }
+        public void Play()
+        {
+            PlaySound();
+            NextSetE();
         }
         private void Load(int i)
         {
@@ -123,4 +127,3 @@ namespace SOS
         }
     }
 }
-

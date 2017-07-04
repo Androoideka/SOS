@@ -89,7 +89,10 @@ namespace SOS
         {
             cb.Items.Clear();
             for (int i = 0; i < Projekt.sb.Length; i++)
-                cb.Items.Add(Projekt.sb[i].ime);
+            {
+                if(i == 0 || Projekt.sb[i].ime != Projekt.sb[i-1].ime)
+                    cb.Items.Add(Projekt.sb[i].ime);
+            }
             cb.SelectedIndex = 0;
         }
         private void ValChange(object sender, EventArgs e)
@@ -210,12 +213,14 @@ namespace SOS
         private void velocityBrushToolStripMenuItem_Click(object sender, EventArgs e)
         {
             InputVelocityForm inp = new InputVelocityForm(velocityBrush);
+            inp.ShowDialog();
             velocityBrush = inp.velocity;
         }
 
         private void setSoundbanksToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Projekt.SetSoundbanks();
+            SetInstruments(paintInst);
         }
 
         private void playStopToolStripMenuItem_Click(object sender, EventArgs e)
@@ -225,3 +230,4 @@ namespace SOS
         }
     }
 }
+
