@@ -4,7 +4,7 @@ namespace SOS
 {
     class Track
     {
-        public List<MIDIEvent> e = new List<MIDIEvent>();
+        public List<MIDIMessage> e = new List<MIDIMessage>();
         public Soundbank instrument;
         public Track(Soundbank inst)
         {

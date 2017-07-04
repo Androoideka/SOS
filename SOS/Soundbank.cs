@@ -1,27 +1,27 @@
-﻿using System.Media;
+﻿using System.Windows.Media;
 
 namespace SOS
 {
     class Soundbank
     {
         public bool percussion;
-        public int n;
         public string ime;
-        public SoundPlayer[] note;
+        public MediaPlayer[] note; 
+        public int n;
         public Soundbank(string p, bool yes)
         {
             percussion = yes;
             ime = p;
             if (percussion)
             {
-                note = new SoundPlayer[1];
-                note[0] = new SoundPlayer(ime + "sample.wav");
+                note = new MediaPlayer[1];
+                note[0] = new MediaPlayer();
             }
             else
             {
-                note = new SoundPlayer[n];
+                note = new MediaPlayer[n];
                 for (int i = 0; i < n; i++)
-                    note[i] = new SoundPlayer(ime + i + "sample.wav");
+                    note[i] = new MediaPlayer();
             }
         }
     }
