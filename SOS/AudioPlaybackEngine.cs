@@ -1,33 +1,27 @@
 ﻿using System;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 
 namespace SOS
 {
     class AudioPlaybackEngine : IDisposable
     {
         private readonly IWavePlayer outputDevice;
-        public readonly MixingSampleProvider mixer;
 
         public AudioPlaybackEngine(int sampleRate = 44100, int channelCount = 2)
         {
-            outputDevice = new WaveOutEvent();
-            mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channelCount));
-            mixer.ReadFully = true;
+            if(AsioOut.isSupported())
+                outputDevice = new AsioOut(0);
+            //else
+                //outputDevice = new WasapiOut()
         }
         public void Dispose()
         {
             outputDevice.Dispose();
         }
-        public void Play()
+        public void Play(IWaveProvider pst)
         {
-            mixer.ReadFully = true;
-            outputDevice.Init(mixer);
+            outputDevice.Init(pst);
             outputDevice.Play();
-        }
-        public void Save(string p)
-        {
-            WaveFileWriter.CreateWaveFile16(p, mixer);
         }
         public static readonly AudioPlaybackEngine Instance = new AudioPlaybackEngine(44100, 2);
     }

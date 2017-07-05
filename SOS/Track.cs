@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 
 namespace SOS
 {
@@ -48,6 +47,10 @@ namespace SOS
                 p += e[i].getDT(1);
             return p;
         }
+        public int GetOffset()
+        {
+            return lengthToPoint(eventNum);
+        }
         public byte[,] ExportPattern()
         {
             int count = 0;
@@ -87,25 +90,13 @@ namespace SOS
             count = 0;
             eventNum = 0;
         }
-        private ISampleProvider ConvertToRightChannelCount(ISampleProvider input)
+        internal List<WaveStream> GenerateMix()
         {
-            if (input.WaveFormat.Channels == 2)
-            {
-                return input;
-            }
-            if (input.WaveFormat.Channels == 1)
-            {
-                return new MonoToStereoSampleProvider(input);
-            }
-            throw new System.NotImplementedException("Can't handle these files at the moment");
-        }
-        internal List<ISampleProvider> GenerateMix()
-        {
-            List<ISampleProvider> mix = new List<ISampleProvider>();
+            List<WaveStream> mix = new List<WaveStream>();
             for (int i = 0; i < 128; i++)
             {
                 if (vel[i] != 0)
-                    mix.Add((ConvertToRightChannelCount(new AutoDisposeFileReader(new AudioFileReader(cas[i]) { Volume = vel[i] }))) as ISampleProvider);
+                    mix.Add((new AudioFileReader(cas[i]) { Volume = vel[i] }) as WaveStream);
             }
             return mix;
         }
