@@ -15,7 +15,7 @@ namespace SOS
         }
         private void ProjectView_Load(object sender, EventArgs e)
         {
-            Projekt.CreateAllInstruments();
+            //Projekt.LoadInstruments();
             Projekt.SetSoundbanks();
             SetCheckedMenuItem();
             for (int i = 0; i < 16; i++)
@@ -92,20 +92,23 @@ namespace SOS
         {
             prj.Play();
         }
-
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 loc = saveFileDialog1.FileName;
                 prj.Save(loc);
+                Projekt.SaveInstruments(loc);
             }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (loc != null)
+            {
                 prj.Save(loc);
+                Projekt.SaveInstruments(loc);
+            }
             else
                 saveAsToolStripMenuItem_Click(saveAsToolStripMenuItem, e);
         }

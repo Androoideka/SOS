@@ -41,6 +41,10 @@ namespace SOS
                 lok = false;
             }
         }
+        public void Play(string file, float volume)
+        {
+            mixer.AddInputStream(new AudioFileReader(file) { Volume = 1f / 127f * volume });
+        }
         private void Elapse(object sender, ElapsedEventArgs e)
         {
             lok = true;

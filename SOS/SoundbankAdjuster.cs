@@ -17,33 +17,35 @@ namespace SOS
         {
             MinimumSize = Size;
             MaximumSize = Size;
-            AddDefaultSound();
-            LoadIn();
+            Projekt.LoadInstruments();
+            GetAvailableInstruments();
         }
         private void AddDefaultSound()
         {
-            string t = Path.Combine(Application.StartupPath, "WDS");
-            if (!Directory.Exists(t))
-                Directory.CreateDirectory(t);
-            File.Copy(@"C:\Windows\Media\tada.wav", Path.Combine(t, @"tada.wav"), true);
-        }
-        private void Resample(string s, string d)
-        {
-            using (var reader = new AudioFileReader(s))
+            if (!Directory.Exists(@"WDS"))
             {
-                var resampler = new WdlResamplingSampleProvider(reader, 44100);
-                WaveFileWriter.CreateWaveFile16(d, resampler);
+                Directory.CreateDirectory(@"WDS");
+                File.Copy(@"C:\Windows\Media\tada.wav", Path.Combine(@"WDS", @"tada.wav"), true);
             }
         }
-        private void LoadIn()
+        private void GetAvailableInstruments()
         {
-            string[] temp = Directory.GetDirectories(Application.StartupPath);
-            for (int i = 0; i < temp.Length; i++)
-                temp[i] = Path.GetFileName(temp[i]);
+            AddDefaultSound();
+            string[] temp = Directory.GetDirectories(".");
+            for (int j = 0; j < temp.Length; j++)
+                temp[j] = Path.GetFileName(temp[j]);
             cb.Items.Clear();
             cb.Items.AddRange(temp);
             cb.Items.Add("Import Soundbanks...");
             LoadSetting();
+        }
+        private void Resample(string s, string d)
+        {
+            using (AudioFileReader reader = new AudioFileReader(s))
+            {
+                var resampler = new SampleToWaveProvider(new WdlResamplingSampleProvider(reader, 44100));
+                WaveFileWriter.CreateWaveFile(d, resampler);
+            }
         }
         private void cb_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -51,19 +53,24 @@ namespace SOS
             {
                 if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    string path = Path.Combine(Application.StartupPath, Path.GetFileName(folderBrowserDialog1.SelectedPath));
+                    string path = Path.GetFileName(folderBrowserDialog1.SelectedPath);
                     if (!Directory.Exists(path))
+                    {
                         Directory.CreateDirectory(path);
-                    string[] files = Directory.GetFiles(folderBrowserDialog1.SelectedPath, "*.wav");
-                    for (int i = 0; i < files.Length; i++)
-                        Resample(files[i], Path.Combine(path, Path.GetFileName(files[i])));
+                        string[] files = Directory.GetFiles(folderBrowserDialog1.SelectedPath, "*.wav");
+                        for (int j = 0; j < files.Length; j++)
+                            Resample(files[j], Path.Combine(path, Path.GetFileName(files[j])));
+                    }
+                    else
+                        MessageBox.Show("Directory already exists.");
                 }
-                LoadIn();
+                GetAvailableInstruments();
             }
         }
         private void SaveSetting()
         {
-            Projekt.sb[i] = new Soundbank(cb.Items[cb.SelectedIndex].ToString(), Directory.GetFiles(Path.Combine(Application.StartupPath, cb.Items[cb.SelectedIndex].ToString())));
+            if(cb.Items[cb.SelectedIndex].ToString() != Projekt.sb[i].ime)
+                Projekt.sb[i] = new Soundbank(cb.Items[cb.SelectedIndex].ToString(), Directory.GetFiles(Path.Combine(Application.StartupPath, cb.Items[cb.SelectedIndex].ToString())));
         }
         private void LoadSetting()
         {
@@ -84,7 +91,6 @@ namespace SOS
         {
             SaveSetting();
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             Close();

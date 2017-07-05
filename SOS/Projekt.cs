@@ -1,5 +1,6 @@
 ﻿using NAudio.Wave;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SOS
 {
@@ -47,17 +48,6 @@ namespace SOS
                 mix.AddInputStream(stream);
             }
         }
-        public static void SetSoundbanks()
-        {
-            SoundbankAdjuster sa = new SoundbankAdjuster();
-            sa.ShowDialog();
-        }
-        public static void CreateAllInstruments()
-        {
-            sb = new Soundbank[128];
-            for (int i = 0; i < 128; i++)
-                sb[i] = new Soundbank("WDS", new string[] { @"C:\Windows\Media\tada.wav" });
-        }
         public int GetTempo()
         {
             double tempo = 60000d / intervale / 4d;
@@ -88,6 +78,55 @@ namespace SOS
         public void Save(string p)
         {
             WaveFileWriter.CreateWaveFile(p, mix);
+        }
+        public static void SetSoundbanks()
+        {
+            SoundbankAdjuster sa = new SoundbankAdjuster();
+            sa.ShowDialog();
+        }
+        ///
+        /// Soundbank related methods
+        /// 
+        public static void LoadInstruments()
+        {
+            if (Projekt.sb == null)
+            {
+                sb = new Soundbank[128];
+                if (File.Exists(@"instruments.ini"))
+                {
+                    StreamReader sr = new StreamReader(@"instruments.ini");
+                    int i = 0;
+                    while (!sr.EndOfStream)
+                    {
+                        string instrumentFl = sr.ReadLine();
+                        if (Directory.Exists(instrumentFl))
+                            sb[i] = new Soundbank(instrumentFl, Directory.GetFiles(instrumentFl));
+                        else
+                            throw new DirectoryNotFoundException(@"Cannot find directory mentioned in instruments.ini");
+                        i++;
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < 128; i++)
+                        sb[i] = new Soundbank("WDS", new string[] { @"C:\Windows\Media\tada.wav" });
+                }
+            }
+        }
+        public static void SaveInstruments(string dest)
+        {
+            StreamWriter sw = new StreamWriter(dest, false);
+            for (int i = 0; i < sb.Length; i++)
+                sw.WriteLine(sb[i].ime);
+        }
+        public static int GetInstrumentWithName(string name)
+        {
+            for (int i = 0; i < sb.Length; i++)
+            {
+                if (sb[i].ime == name)
+                    return i;
+            }
+            throw new System.Exception("Not found");
         }
     }
 }

@@ -81,11 +81,14 @@ namespace SOS
         }
         private void BeatTransform(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex != -1 && e.ColumnIndex != -1)
+            /*if (e.RowIndex != -1 && e.ColumnIndex != -1)
             {
-                trComp[e.ColumnIndex, e.RowIndex].Value = velocityBrush;
+                if (lmb)
+                    trComp[e.ColumnIndex, e.RowIndex].Value = velocityBrush;
+                else if (rmb)
+                    trComp[e.ColumnIndex, e.RowIndex].Value = 0;
                 AssignColor(e.ColumnIndex, e.RowIndex);
-            }
+            }*/
         }
         private void ChangeColor(Color t, int loc1, int loc2)
         {
@@ -168,6 +171,29 @@ namespace SOS
         {
             SaveTrack();
             p.Play();
+        }
+        private void trComp_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            BeatTransform(true, e);
+        }
+        private void trComp_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            BeatTransform(!trComp[e.ColumnIndex, e.RowIndex].Selected, e);
+        }
+        private void BeatTransform(bool selection, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex > -1 && e.ColumnIndex > -1)
+            {
+                if (e.Button == MouseButtons.Right)
+                    trComp[e.ColumnIndex, e.RowIndex].Value = 0;
+                else if (selection && e.Button == MouseButtons.Left)
+                {
+                    trComp[e.ColumnIndex, e.RowIndex].Selected = true;
+                    trComp[e.ColumnIndex, e.RowIndex].Value = velocityBrush;
+                    AudioPlaybackEngine.Instance.Play(Projekt.sb[Convert.ToByte(trInst[e.ColumnIndex, 0].Value)].note[e.RowIndex], Convert.ToSingle(trComp[e.ColumnIndex, e.RowIndex].Value));
+                }
+                AssignColor(e.ColumnIndex, e.RowIndex);
+            }
         }
     }
 }

@@ -163,12 +163,15 @@
             this.trComp.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.trComp.ColumnHeadersVisible = false;
             this.trComp.Location = new System.Drawing.Point(12, 147);
+            this.trComp.MultiSelect = false;
             this.trComp.Name = "trComp";
             this.trComp.ReadOnly = true;
             this.trComp.RowHeadersVisible = false;
             this.trComp.Size = new System.Drawing.Size(1240, 826);
             this.trComp.TabIndex = 4;
             this.trComp.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.BeatTransform);
+            this.trComp.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.trComp_CellMouseDown);
+            this.trComp.CellMouseMove += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.trComp_CellMouseMove);
             // 
             // PianoRoll
             // 
