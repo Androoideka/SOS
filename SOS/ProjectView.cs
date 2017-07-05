@@ -46,21 +46,20 @@ namespace SOS
         }
         private void SetCheckedMenuItem()
         {
-            double tempo = prj.GetTempo();
-            int index = tempo == 208 ? 0 : (tempo == 200 ? 1 : (tempo == 168 ? 2 : (tempo == 120 ? 3 : (tempo == 108 ? 4 : (tempo == 76 ? 5 : (tempo == 66 ? 6 : 7))))));
-            (tempoToolStripMenuItem.DropDownItems[index] as ToolStripMenuItem).CheckState = CheckState.Checked;
-        }
-        private void tempoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            int p = Convert.ToInt32((sender as ToolStripMenuItem).Tag);
+            int index = prj.GetTempo();
             for (int i = 0; i < tempoToolStripMenuItem.DropDownItems.Count; i++)
             {
-                if (p == i)
+                if (index == i)
                     (tempoToolStripMenuItem.DropDownItems[i] as ToolStripMenuItem).CheckState = CheckState.Checked;
                 else
                     (tempoToolStripMenuItem.DropDownItems[i] as ToolStripMenuItem).CheckState = CheckState.Unchecked;
             }
+        }
+        private void tempoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int p = Convert.ToInt32((sender as ToolStripMenuItem).Tag);
             prj.SetTempo(p);
+            SetCheckedMenuItem();
         }
 
         private void playStopToolStripMenuItem_Click(object sender, EventArgs e)

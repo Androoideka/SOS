@@ -48,9 +48,10 @@ namespace SOS
             for (int i = 0; i < 128; i++)
                 sb[i] = new Soundbank("WDS", new string[] { @"C:\Windows\Media\tada.wav" });
         }
-        public double GetTempo()
+        public int GetTempo()
         {
-            return 60000d / tmr.Interval / 4d;
+            double tempo = 60000d / tmr.Interval / 4d;
+            return tempo > 200 ? 0 : (tempo > 168 ? 1 : (tempo > 120 ? 2 : (tempo > 108 ? 3 : (tempo > 76 ? 4 : (tempo > 66 ? 5 : (tempo > 60 ? 6 : 7))))));
         }
         public void SaveToTrack(int i, byte[,] p, int n)
         {
