@@ -47,7 +47,6 @@ namespace SOS
                 }
                 else if (mixedSoundsInTrackPos == null) completedTracks++;
             }
-            if (t.Count > 0)
             if (mixedSoundsInPos.Count > 0)
             {
                 PrototypeWaveOffsetStream32 stream = new PrototypeWaveOffsetStream32(new WaveMixerStream32(mixedSoundsInPos, true), System.TimeSpan.FromMilliseconds(intervale * offset));
