@@ -79,14 +79,11 @@ namespace SOS
             }
             trLng.Enabled = true;
         }
-        private void BeatTransform(object sender, DataGridViewCellMouseEventArgs e)
+        private void BeatTransform(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex != -1 && e.ColumnIndex != -1 && e.Button != MouseButtons.None)
+            if (e.RowIndex != -1 && e.ColumnIndex != -1)
             {
-                if (e.Button == MouseButtons.Left && trComp[e.ColumnIndex, e.RowIndex].Style.BackColor != Color.Gold)
-                    trComp[e.ColumnIndex, e.RowIndex].Value = velocityBrush;
-                else if (e.Button == MouseButtons.Right)
-                    trComp[e.ColumnIndex, e.RowIndex].Value = 0;
+                trComp[e.ColumnIndex, e.RowIndex].Value = velocityBrush;
                 AssignColor(e.ColumnIndex, e.RowIndex);
             }
         }

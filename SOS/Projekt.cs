@@ -6,7 +6,7 @@ namespace SOS
     public class Projekt
     {
         private double intervale;
-        private int j;
+        private int completedTracks, offset;
         private WaveMixerStream32 mix;
         public Track[] tr;
         public int trLength;
@@ -18,16 +18,17 @@ namespace SOS
         }
         private void FormMix()
         {
+            offset = -1;
+            completedTracks = 0;
             mix = new WaveMixerStream32();
             for (int i = 0; i < trLength; i++)
                 tr[i].ResetTrackPosition();
-            while (j < trLength)
+            while (completedTracks < trLength)
                 CombineTrackMixers();
         }
         private void CombineTrackMixers()
         {
-            j = 0;
-            int offset = -1;
+            completedTracks = 0;
             List<WaveStream> t = new List<WaveStream>();
             for (int i = 0; i < trLength; i++)
             {
@@ -35,12 +36,12 @@ namespace SOS
                 {
                     List<WaveStream> k = tr[i].GenerateMix();
                     t.AddRange(k);
-                    if (k.Count > 0 && offset == -1)
+                    if (k.Count > 0)
                         offset = tr[i].GetOffset();
                 }
-                else j++;
+                else completedTracks++;
             }
-            if (offset != -1)
+            if (t.Count > 0)
             {
                 PrototypeWaveOffsetStream32 stream = new PrototypeWaveOffsetStream32(new WaveMixerStream32(t, true), System.TimeSpan.FromMilliseconds(intervale * offset));
                 mix.AddInputStream(stream);
@@ -65,12 +66,14 @@ namespace SOS
         public void SaveToTrack(int i, byte[,] p, int n)
         {
             tr[i].ImportPattern(p, n);
+            //FormMix();
         }
         public void DeleteTrack(int i)
         {
             for (int j = i + 1; j < trLength; j++)
                 tr[j - 1] = tr[j];
             trLength--;
+            //FormMix();
         }
         public void SetTempo(int p)
         {
@@ -80,11 +83,10 @@ namespace SOS
         public void Play()
         {
             FormMix();
-            AudioPlaybackEngine.Instance.Play(mix);
+            AudioPlaybackEngine.Instance.Play(mix, intervale * offset);
         }
         public void Save(string p)
         {
-            FormMix();
             WaveFileWriter.CreateWaveFile(p, mix);
         }
     }

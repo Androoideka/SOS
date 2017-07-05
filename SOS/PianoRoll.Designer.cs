@@ -168,7 +168,7 @@
             this.trComp.RowHeadersVisible = false;
             this.trComp.Size = new System.Drawing.Size(1240, 826);
             this.trComp.TabIndex = 4;
-            this.trComp.CellMouseMove += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.BeatTransform);
+            this.trComp.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.BeatTransform);
             // 
             // PianoRoll
             // 

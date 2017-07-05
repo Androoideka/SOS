@@ -114,6 +114,7 @@ namespace SOS
                     int read = sourceStream.Read(destBuffer, bytesWritten + offset, sourceBytesRequired);
                     bytesWritten += read;
                 }
+                position += numBytes;
                 return numBytes;
             }
         }
