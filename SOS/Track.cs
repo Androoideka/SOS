@@ -10,7 +10,6 @@ namespace SOS
         private int count, eventNum;
         private float[] vel;
         private string[] cas;
-        public MixingSampleProvider mix;
         public Track()
         {
             e = new List<Event>();
@@ -90,30 +89,25 @@ namespace SOS
         }
         private ISampleProvider ConvertToRightChannelCount(ISampleProvider input)
         {
-            if (input.WaveFormat.Channels == mix.WaveFormat.Channels)
+            if (input.WaveFormat.Channels == 2)
             {
                 return input;
             }
-            if (input.WaveFormat.Channels == 1 && mix.WaveFormat.Channels == 2)
+            if (input.WaveFormat.Channels == 1)
             {
                 return new MonoToStereoSampleProvider(input);
             }
             throw new System.NotImplementedException("Can't handle these files at the moment");
         }
-        public void AddSound(string fileName, float vol)
+        internal List<ISampleProvider> GenerateMix()
         {
-            var input = new AudioFileReader(fileName);
-            input.Volume = vol;
-            mix.AddMixerInput(ConvertToRightChannelCount(new AutoDisposeFileReader(input)));
-        }
-        private void GenerateMix()
-        {
-            mix = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+            List<ISampleProvider> mix = new List<ISampleProvider>();
             for (int i = 0; i < 128; i++)
             {
                 if (vel[i] != 0)
-                    AddSound(cas[i], vel[i]);
+                    mix.Add((ConvertToRightChannelCount(new AutoDisposeFileReader(new AudioFileReader(cas[i]) { Volume = vel[i] }))) as ISampleProvider);
             }
+            return mix;
         }
         public bool Prepare()
         {
@@ -123,7 +117,7 @@ namespace SOS
                 {
                     for (int i = 0; i < 128; i++)
                         vel[i] = 0;
-                    return true;
+                    return false;
                 }
                 else
                 {
@@ -136,8 +130,7 @@ namespace SOS
                 count = 0;
             }
             count++;
-            GenerateMix();
-            return false;
+            return true;
         }
         private void Load(int i)
         {

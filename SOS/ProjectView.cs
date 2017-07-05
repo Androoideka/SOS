@@ -90,12 +90,24 @@ namespace SOS
         }
         private void playStopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            prj.Reset();
+            prj.Play();
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if(saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                loc = saveFileDialog1.FileName;
+                prj.Save(loc);
+            }
+        }
 
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (loc != null)
+                prj.Save(loc);
+            else
+                saveAsToolStripMenuItem_Click(saveAsToolStripMenuItem, e);
         }
     }
 }

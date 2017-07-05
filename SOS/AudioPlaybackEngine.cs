@@ -14,12 +14,20 @@ namespace SOS
             outputDevice = new WaveOutEvent();
             mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(sampleRate, channelCount));
             mixer.ReadFully = true;
-            outputDevice.Init(mixer);
-            outputDevice.Play();
         }
         public void Dispose()
         {
             outputDevice.Dispose();
+        }
+        public void Play()
+        {
+            mixer.ReadFully = true;
+            outputDevice.Init(mixer);
+            outputDevice.Play();
+        }
+        public void Save(string p)
+        {
+            WaveFileWriter.CreateWaveFile16(p, mixer);
         }
         public static readonly AudioPlaybackEngine Instance = new AudioPlaybackEngine(44100, 2);
     }

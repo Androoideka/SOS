@@ -170,7 +170,7 @@ namespace SOS
         private void playStopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveTrack();
-            p.Reset();
+            p.Play();
         }
     }
 }

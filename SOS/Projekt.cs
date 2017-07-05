@@ -1,6 +1,7 @@
-﻿using System.Timers;
+﻿using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using NAudio.Wave;
+using System.Collections.Generic;
+using System.Timers;
 
 namespace SOS
 {
@@ -8,40 +9,50 @@ namespace SOS
     {
         private Timer tmr;
         private int j;
-        private MixingSampleProvider mix;
+        private List<ISampleProvider> mix;
         public Track[] tr;
         public int trLength;
         public static Soundbank[] sb;
+        bool sev = false;
+        string p;
+        System.Diagnostics.Stopwatch stp = System.Diagnostics.Stopwatch.StartNew();
         public Projekt()
         {
             tr = new Track[16];
-            mix = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
             tmr = new Timer(125);
             tmr.Elapsed += TmrTick;
+            mix = new List<ISampleProvider>();
         }
         private void TmrTick(object sender, ElapsedEventArgs e)
         {
-            AudioPlaybackEngine.Instance.mixer.AddMixerInput(mix);
+            if (mix.Count != 0)
+                AudioPlaybackEngine.Instance.mixer.AddMixerInput(new MixingSampleProvider(mix));
             if (j == trLength)
-                tmr.Stop();
-            j = 0;
-            CombineTrackMixers();
+                Reset();
+            else
+            {
+                j = 0;
+                CombineTrackMixers();
+            }
         }
-        public void Reset()
+        private void Reset()
         {
+            AudioPlaybackEngine.Instance.mixer.ReadFully = false;
             tmr.Stop();
+            if(sev)
+                AudioPlaybackEngine.Instance.Save(p);
             j = 0;
             for (int i = 0; i < trLength; i++)
                 tr[i].ResetTrackPosition();
             CombineTrackMixers();
-            tmr.Start();
         }
         private void CombineTrackMixers()
         {
+            mix.Clear();
             for (int i = 0; i < trLength; i++)
             {
                 if (tr[i].Prepare())
-                    mix.AddMixerInput(tr[i].mix);
+                    mix.AddRange(tr[i].GenerateMix());
                 else j++;
             }
         }
@@ -64,17 +75,33 @@ namespace SOS
         public void SaveToTrack(int i, byte[,] p, int n)
         {
             tr[i].ImportPattern(p, n);
+            Reset();
         }
         public void DeleteTrack(int i)
         {
             for (int j = i + 1; j < trLength; j++)
                 tr[j - 1] = tr[j];
             trLength--;
+            Reset();
         }
         public void SetTempo(int p)
         {
             int bpm = p == 0 ? 208 : (p == 1 ? 200 : (p == 2 ? 168 : (p == 3 ? 120 : (p == 4 ? 108 : (p == 5 ? 76 : (p == 6 ? 66 : 40))))));
             tmr.Interval = 60000d / bpm / 4d;
+        }
+        public void Play()
+        {
+            sev = false;
+            if (tmr.Enabled)
+                Reset();
+            AudioPlaybackEngine.Instance.Play();
+            tmr.Start();
+        }
+        public void Save(string p)
+        {
+            this.p = p;
+            Play();
+            sev = true;
         }
     }
 }
