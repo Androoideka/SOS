@@ -163,7 +163,7 @@ namespace SOS
         }
         private void velocityBrushToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InputVelocityForm inp = new InputVelocityForm(velocityBrush);
+            InputVelocity inp = new InputVelocity(velocityBrush);
             inp.ShowDialog();
             velocityBrush = inp.velocity;
         }

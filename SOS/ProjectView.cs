@@ -7,6 +7,7 @@ namespace SOS
     {
         Projekt prj = new Projekt();
         Button[] b = new Button[16];
+        string loc;
         int n;
         public ProjectView()
         {
@@ -90,6 +91,11 @@ namespace SOS
         private void playStopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             prj.Reset();
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

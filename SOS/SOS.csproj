@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A20F67ED-1D26-4AAA-8505-CFDC8665BCAA}</ProjectGuid>
+    <ProjectGuid>{2A224C5F-4759-44AA-B24B-00F825E811F0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SOS</RootNamespace>
@@ -34,10 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NAudio">
-      <HintPath>..\..\NAudio-Release\NAudio.dll</HintPath>
+      <HintPath>..\..\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="NAudio.WindowsMediaFormat">
-      <HintPath>..\..\NAudio-Release\NAudio.WindowsMediaFormat.dll</HintPath>
+      <HintPath>..\..\NAudio.WindowsMediaFormat.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,12 +56,14 @@
     <Compile Include="AutoDisposeFileReader.cs" />
     <Compile Include="DoubleBuffering.cs" />
     <Compile Include="Event.cs" />
-    <Compile Include="InputVelocityForm.cs">
+    <Compile Include="InputVelocity.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputVelocityForm.Designer.cs">
-      <DependentUpon>InputVelocityForm.cs</DependentUpon>
+    <Compile Include="InputVelocity.Designer.cs">
+      <DependentUpon>InputVelocity.cs</DependentUpon>
     </Compile>
+    <Compile Include="MIDIEvent.cs" />
+    <Compile Include="PCEvent.cs" />
     <Compile Include="PianoRoll.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,8 +76,6 @@
     <Compile Include="ProjectView.Designer.cs">
       <DependentUpon>ProjectView.cs</DependentUpon>
     </Compile>
-    <Compile Include="PCEvent.cs" />
-    <Compile Include="MIDIEvent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Projekt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,8 +87,8 @@
       <DependentUpon>SoundbankAdjuster.cs</DependentUpon>
     </Compile>
     <Compile Include="Track.cs" />
-    <EmbeddedResource Include="InputVelocityForm.resx">
-      <DependentUpon>InputVelocityForm.cs</DependentUpon>
+    <EmbeddedResource Include="InputVelocity.resx">
+      <DependentUpon>InputVelocity.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PianoRoll.resx">
       <DependentUpon>PianoRoll.cs</DependentUpon>

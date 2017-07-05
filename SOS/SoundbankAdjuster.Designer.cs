@@ -32,6 +32,7 @@
             this.nud = new System.Windows.Forms.NumericUpDown();
             this.cb = new System.Windows.Forms.ComboBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nud)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,11 +89,24 @@
             this.cb.TabIndex = 2;
             this.cb.SelectedIndexChanged += new System.EventHandler(this.cb_SelectedIndexChanged);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(67, 64);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Accept";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // SoundbankAdjuster
             // 
+            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(207, 70);
+            this.ClientSize = new System.Drawing.Size(207, 93);
+            this.ControlBox = false;
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.cb);
             this.Controls.Add(this.nud);
             this.Controls.Add(this.lb);
@@ -112,5 +126,6 @@
         private System.Windows.Forms.NumericUpDown nud;
         private System.Windows.Forms.ComboBox cb;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.Button button1;
     }
 }

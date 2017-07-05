@@ -45,6 +45,9 @@
             this.largoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new System.Windows.Forms.Button();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,6 +66,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
+            this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem,
             this.instrumentsToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -71,14 +76,14 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // instrumentsToolStripMenuItem
             // 
             this.instrumentsToolStripMenuItem.Name = "instrumentsToolStripMenuItem";
-            this.instrumentsToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.instrumentsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.instrumentsToolStripMenuItem.Text = "Instruments";
             this.instrumentsToolStripMenuItem.Click += new System.EventHandler(this.instrumentsToolStripMenuItem_Click);
             // 
@@ -112,12 +117,12 @@
             this.tempoToolStripMenuItem.Name = "tempoToolStripMenuItem";
             this.tempoToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.tempoToolStripMenuItem.Text = "Tempo";
-            this.tempoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
             // 
             // prestissimoToolStripMenuItem
             // 
             this.prestissimoToolStripMenuItem.Name = "prestissimoToolStripMenuItem";
             this.prestissimoToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.prestissimoToolStripMenuItem.Tag = "0";
             this.prestissimoToolStripMenuItem.Text = "Prestissimo";
             this.prestissimoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
             // 
@@ -125,6 +130,7 @@
             // 
             this.prestoToolStripMenuItem.Name = "prestoToolStripMenuItem";
             this.prestoToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.prestoToolStripMenuItem.Tag = "1";
             this.prestoToolStripMenuItem.Text = "Presto";
             this.prestoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
             // 
@@ -132,6 +138,7 @@
             // 
             this.allegroToolStripMenuItem.Name = "allegroToolStripMenuItem";
             this.allegroToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.allegroToolStripMenuItem.Tag = "2";
             this.allegroToolStripMenuItem.Text = "Allegro";
             this.allegroToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
             // 
@@ -139,6 +146,7 @@
             // 
             this.moderatoToolStripMenuItem.Name = "moderatoToolStripMenuItem";
             this.moderatoToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.moderatoToolStripMenuItem.Tag = "3";
             this.moderatoToolStripMenuItem.Text = "Moderato";
             this.moderatoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
             // 
@@ -146,6 +154,7 @@
             // 
             this.andanteToolStripMenuItem.Name = "andanteToolStripMenuItem";
             this.andanteToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.andanteToolStripMenuItem.Tag = "4";
             this.andanteToolStripMenuItem.Text = "Andante";
             this.andanteToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
             // 
@@ -153,6 +162,7 @@
             // 
             this.adagioToolStripMenuItem.Name = "adagioToolStripMenuItem";
             this.adagioToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.adagioToolStripMenuItem.Tag = "5";
             this.adagioToolStripMenuItem.Text = "Adagio";
             this.adagioToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
             // 
@@ -160,6 +170,7 @@
             // 
             this.larghettoToolStripMenuItem.Name = "larghettoToolStripMenuItem";
             this.larghettoToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.larghettoToolStripMenuItem.Tag = "6";
             this.larghettoToolStripMenuItem.Text = "Larghetto";
             this.larghettoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
             // 
@@ -167,6 +178,7 @@
             // 
             this.largoToolStripMenuItem.Name = "largoToolStripMenuItem";
             this.largoToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.largoToolStripMenuItem.Tag = "7";
             this.largoToolStripMenuItem.Text = "Largo";
             this.largoToolStripMenuItem.Click += new System.EventHandler(this.tempoToolStripMenuItem_Click);
             // 
@@ -187,6 +199,19 @@
             this.button1.Text = "+";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Text = "Save as";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Text = "Save";
             // 
             // ProjectView
             // 
@@ -225,6 +250,9 @@
         private System.Windows.Forms.ToolStripMenuItem adagioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem larghettoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem largoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
     }
 }
 

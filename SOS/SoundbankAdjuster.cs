@@ -84,5 +84,10 @@ namespace SOS
         {
             SaveSetting();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 
 namespace SOS
 {
@@ -8,6 +10,7 @@ namespace SOS
         private int count, eventNum;
         private float[] vel;
         private string[] cas;
+        public MixingSampleProvider mix;
         public Track()
         {
             e = new List<Event>();
@@ -81,19 +84,47 @@ namespace SOS
         }
         public void ResetTrackPosition()
         {
-            for (int i = 0; i < 128; i++)
-                vel[i] = 0;
             Load(0);
             count = 0;
             eventNum = 0;
-            Play();
         }
-        public bool Play()
+        private ISampleProvider ConvertToRightChannelCount(ISampleProvider input)
+        {
+            if (input.WaveFormat.Channels == mix.WaveFormat.Channels)
+            {
+                return input;
+            }
+            if (input.WaveFormat.Channels == 1 && mix.WaveFormat.Channels == 2)
+            {
+                return new MonoToStereoSampleProvider(input);
+            }
+            throw new System.NotImplementedException("Can't handle these files at the moment");
+        }
+        public void AddSound(string fileName, float vol)
+        {
+            var input = new AudioFileReader(fileName);
+            input.Volume = vol;
+            mix.AddMixerInput(ConvertToRightChannelCount(new AutoDisposeFileReader(input)));
+        }
+        private void GenerateMix()
+        {
+            mix = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+            for (int i = 0; i < 128; i++)
+            {
+                if (vel[i] != 0)
+                    AddSound(cas[i], vel[i]);
+            }
+        }
+        public bool Prepare()
         {
             while (count == e[eventNum].getDT(1))
             {
                 if (e[eventNum].eventType == 255)
+                {
+                    for (int i = 0; i < 128; i++)
+                        vel[i] = 0;
                     return true;
+                }
                 else
                 {
                     if (e[eventNum].eventType == 0)
@@ -105,11 +136,7 @@ namespace SOS
                 count = 0;
             }
             count++;
-            for (int i = 0; i < 128; i++)
-            {
-                if (vel[i] != 0)
-                    AudioPlaybackEngine.Instance.PlaySound(cas[i], vel[i]);
-            }
+            GenerateMix();
             return false;
         }
         private void Load(int i)

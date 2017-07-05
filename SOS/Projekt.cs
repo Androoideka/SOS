@@ -1,40 +1,49 @@
-﻿using System.Threading.Tasks;
-using System.Timers;
+﻿using System.Timers;
+using NAudio.Wave.SampleProviders;
+using NAudio.Wave;
 
 namespace SOS
 {
     public class Projekt
     {
         private Timer tmr;
+        private int j;
+        private MixingSampleProvider mix;
         public Track[] tr;
         public int trLength;
         public static Soundbank[] sb;
-        int j;
         public Projekt()
         {
             tr = new Track[16];
+            mix = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
             tmr = new Timer(125);
             tmr.Elapsed += TmrTick;
         }
         private void TmrTick(object sender, ElapsedEventArgs e)
         {
-            for (int i = 0; i < trLength; i++)
-            {
-                if (Task<bool>.Factory.StartNew(() => tr[i].Play()).Result)
-                    j++;
-            }
+            AudioPlaybackEngine.Instance.mixer.AddMixerInput(mix);
             if (j == trLength)
                 tmr.Stop();
+            j = 0;
+            CombineTrackMixers();
         }
         public void Reset()
         {
             tmr.Stop();
             j = 0;
-            System.Action[] parms = new System.Action[trLength];
             for (int i = 0; i < trLength; i++)
-                parms[i] = tr[i].ResetTrackPosition;
-            Parallel.Invoke(parms);
+                tr[i].ResetTrackPosition();
+            CombineTrackMixers();
             tmr.Start();
+        }
+        private void CombineTrackMixers()
+        {
+            for (int i = 0; i < trLength; i++)
+            {
+                if (tr[i].Prepare())
+                    mix.AddMixerInput(tr[i].mix);
+                else j++;
+            }
         }
         public static void SetSoundbanks()
         {
