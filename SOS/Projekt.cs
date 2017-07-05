@@ -28,6 +28,7 @@ namespace SOS
         }
         public void Reset()
         {
+            tmr.Stop();
             j = 0;
             System.Action[] parms = new System.Action[trLength];
             for (int i = 0; i < trLength; i++)
