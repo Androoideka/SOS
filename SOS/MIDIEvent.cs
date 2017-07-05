@@ -2,16 +2,78 @@
 {
     class MIDIEvent : Event
     {
-        internal readonly byte velocity;
+        public readonly byte velocity;
         public readonly byte note;
-        public MIDIEvent(byte vel, byte no, int deltatime) : base(0, deltatime)
+        public readonly byte channel;
+        public MIDIEvent(int dt, byte ch, byte vel, byte no) : base(dt, 9)
         {
+            channel = ch;
             velocity = vel;
             note = no;
         }
-        public float GetVolume()
+        public MIDIEvent(int dt, byte ch, byte vel) : base(dt, 12)
         {
-            return 1f / 127f * velocity;
+            channel = ch;
+            velocity = vel;
+        }
+        private static byte DetermineEventType(byte ec, Event runningStatus)
+        {
+            //Note On 9
+            //Polyphonic Key Pressure 10
+            //Control Change 11
+            //Program Change 12
+            //Aftertouch 13
+            //Pitchbend 14
+            int chv = ec - 144, i = 9;
+            while (chv > 15 && i < 15)
+            {
+                chv -= 16;
+                i++;
+            }
+            if (i > 14)
+                return (runningStatus as MIDIEvent).eventType;
+            return (byte)i;
+        }
+        public MIDIEvent(int dt, byte[] file, Event runningStatus, ref int i) : base(dt, DetermineEventType(file[i], runningStatus))
+        {
+            if (runningStatus.eventType > 8 && runningStatus.eventType < 15 && file[i] < 128)
+                channel = (runningStatus as MIDIEvent).channel;
+            else
+            {
+                int chv = file[i] - 144;
+                while (chv > 15)
+                    chv -= 16;
+                channel = (byte)chv;
+                i++;
+            }
+            if (eventType == 12 || eventType == 13)
+            {
+                velocity = file[i];
+                i++;
+            }
+            else
+            {
+                note = file[i];
+                i++;
+                velocity = file[i];
+                i++;
+            }
+        }
+        internal int CalculateChunks(byte runningStatus)
+        {
+            int i = 0;
+            if (Status() != runningStatus)
+                i++;
+            i++;
+            if (eventType != 12 && eventType != 13)
+                i++;
+            return i;
+        }
+        internal byte Status()
+        {
+            int status = eventType * 16;
+            status += channel;
+            return (byte)status;
         }
     }
 }

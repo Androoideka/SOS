@@ -1,19 +1,120 @@
-﻿using System.Collections.Generic;
-using NAudio.Wave;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+/*private MIDIEvent ReadMIDIEvent(int dt, byte[] file, ref int i)
+{
+int channel = file[i] - 144;
+byte ch;
+if (channel > 16)
+{
+int j = e.Count;
+while (e[j].eventType != 9)
+j--;
+ch = (e[j] as MIDIEvent).channel;
+}
+else
+ch = (byte)channel;
+i++;
+byte key = file[i];
+i++;
+byte velocity = file[i];
+i++;
+return new MIDIEvent(ch, velocity, key, dt);
+}
 
+private SysexEvent ReadSysExEvent(int dt, byte[] file, ref int i)
+{
+byte t = file[i];
+i++;
+int length = ReadDeltaTimeChunk(file, ref i);
+byte[] p = new byte[length];
+for (int j = 0; j < length; j++)
+{
+p[j] = file[i];
+i++;
+}
+return new SysexEvent(t, p, dt);
+}
+
+private MetaEvent ReadMetaEvent(int dt, byte[] file, ref int i)
+{
+i++;
+byte type = file[i];
+i++;
+int length = ReadDeltaTimeChunk(file, ref i);
+byte[] p = new byte[length];
+for (int j = 0; j < length; j++)
+{
+p[j] = file[i];
+i++;
+}
+return new MetaEvent(type, p, dt);
+}
+private Event ReadEvent(byte[] file, ref int i)
+{
+int dt = ReadDeltaTimeChunk(file, ref i);
+if (file[i] == 255)
+return ReadMetaEvent(dt, file, ref i);
+else if (file[i] == 240 || file[i] == 247)
+return ReadSysExEvent(dt, file, ref i);
+return ReadMIDIEvent(dt, file, ref i);
+}*/
 namespace SOS
 {
     public class Track
     {
         private List<Event> e;
         private int count, eventNum;
-        private float[] vel;
-        private string[] cas;
-        public Track()
+        internal Track()
         {
             e = new List<Event>();
-            vel = new float[128];
+            e.Add(new MetaEvent(16, 47, null));
         }
+        internal Track(byte[] file, ref int i)
+        {
+            e = new List<Event>();
+            if (!(file[i] == 77 && file[i + 1] == 84 && file[i + 2] == 114 && file[i + 3] == 107))
+                throw new System.ArgumentException("INVALID FILE", "file");
+            i += 4;
+            int length = ReadNChunks(file, ref i, 4);
+            int diff = i;
+            while (i - diff < length)
+            {
+                int dt = ReadDeltaTimeChunk(file, ref i);
+
+                if (file[i] == 255)
+                    e.Add(new MetaEvent(dt, file, ref i));
+
+                else if (file[i] == 240 || file[i] == 247)
+                    e.Add(new SysexEvent(dt, file, ref i));
+
+                if (e.Count != 0)
+                    e.Add(new MIDIEvent(dt, file, e[e.Count], ref i));
+                else
+                    e.Add(new MIDIEvent(dt, file, new Event(0, 0), ref i));
+            }
+        }
+        private int ReadChunk(byte[] file, ref int i, int val)
+        {
+            val *= 10 + file[i];
+            i++;
+            return val;
+        }
+        private int ReadDeltaTimeChunk(byte[] file, ref int i)
+        {
+            int val = 0;
+            while (file[i] > 127)
+                val = ReadChunk(file, ref i, val);
+            return val;
+        }
+        private int ReadNChunks(byte[] file, ref int i, int length)
+        {
+            int val = 0;
+            for (int j = 0; j < length; j++)
+                val = ReadChunk(file, ref i, val);
+            return val;
+        }
+        //Convert to constructor and iron out the GUI
         public void ImportPattern(byte[,] a, int n)
         {
             e.Clear();
@@ -29,27 +130,23 @@ namespace SOS
                     {
                         //YES I'M SORRY IT'S HARD-CODED
                         if (j >= 128)
-                            e.Add(new PCEvent(a[j, i], sixteenthsSinceLastMessage));
+                            e.Add(new MIDIEvent(sixteenthsSinceLastMessage, a[j, i], a[j, i]));
                         else
-                            e.Add(new MIDIEvent(a[j, i], (byte)j, sixteenthsSinceLastMessage));
+                            e.Add(new MIDIEvent(sixteenthsSinceLastMessage, a[128, i], a[j, i], (byte)j));
                         lastVal[j] = a[j, i];
                         sixteenthsSinceLastMessage = 0;
                     }
                 }
                 sixteenthsSinceLastMessage++;
             }
-            e.Add(new Event(255, sixteenthsSinceLastMessage));
+            e.Add(new Event(sixteenthsSinceLastMessage, 255));
         }
         private int lengthToPoint(int n)
         {
             int p = 0;
             for (int i = 0; i < n; i++)
-                p += e[i].getDT(1);
+                p += e[i].deltaTime;
             return p;
-        }
-        public int GetOffset()
-        {
-            return lengthToPoint(eventNum);
         }
         public byte[,] ExportPattern()
         {
@@ -68,11 +165,11 @@ namespace SOS
             }
             for (int i = 0; i < e.Count; i++)
             {
-                count += e[i].getDT(1);
-                if (e[i].eventType == 0)
+                count += e[i].deltaTime;
+                if (e[i].eventType == 9)
                     nizSablon[(e[i] as MIDIEvent).note, count] = (e[i] as MIDIEvent).velocity;
-                else if (e[i].eventType == 1)
-                    nizSablon[128, count] = (byte)((e[i] as PCEvent).patch);
+                else if (e[i].eventType == 12)
+                    nizSablon[128, count] = (byte)((e[i] as MIDIEvent).velocity);
             }
             for (int i = 1; i < n; i++)
             {
@@ -84,44 +181,45 @@ namespace SOS
             }
             return nizSablon;
         }
-        public void ResetTrackPosition()
+        internal List<Event> Read()
         {
-            Load(0);
-            count = 0;
-            eventNum = 0;
-        }
-        private List<WaveStream> GenerateMix()
-        {
-            List<WaveStream> mix = new List<WaveStream>();
-            for (int i = 0; i < 128; i++)
+            List<Event> t = new List<Event>();
+            while (count == e[eventNum].deltaTime)
             {
-                if (vel[i] != 0)
-                    mix.Add((new AudioFileReader(cas[i]) { Volume = vel[i] }) as WaveStream);
-            }
-            return mix;
-        }
-        public List<WaveStream> Read()
-        {
-            while (count == e[eventNum].getDT(1))
-            {
-                if (e[eventNum].eventType == 255)
-                    return null;
-                else
-                {
-                    if (e[eventNum].eventType == 0)
-                        vel[(e[eventNum] as MIDIEvent).note] = (e[eventNum] as MIDIEvent).GetVolume();
-                    else if (e[eventNum].eventType == 1)
-                        Load((e[eventNum] as PCEvent).patch);
-                }
+                t.Add(e[eventNum]);
                 eventNum++;
                 count = 0;
             }
             count++;
-            return GenerateMix();
+            return t;
         }
-        private void Load(int i)
+
+        internal void WriteTrack(StreamWriter sw)
         {
-            cas = Projekt.sb[i].note;
+            sw.Write('M');
+            sw.Write("T");
+            sw.Write('r');
+            sw.Write('k');
+            WriteLength(sw);
+            for (int i = 0; i < e.Count; i++)
+            {
+                byte[] write = e[i].WriteEvent();
+                for (int j = 0; j < write.Length; j++)
+                    sw.Write(write[j]);
+            }
+        }
+
+        private void WriteLength(StreamWriter sw)
+        {
+            int length = 0;
+            for (int i = 0; i < e.Count; i++)
+                length += e[i].CalculateChunks();
+            for (int i = 4; i >= 0; i--)
+            {
+                int p = length / (int)Math.Pow(255, i);
+                sw.Write(p);
+                length = length - p * (int)Math.Pow(255, i);
+            }
         }
     }
 }

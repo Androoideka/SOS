@@ -61,8 +61,8 @@
     <Compile Include="InputVelocity.Designer.cs">
       <DependentUpon>InputVelocity.cs</DependentUpon>
     </Compile>
+    <Compile Include="MetaEvent.cs" />
     <Compile Include="MIDIEvent.cs" />
-    <Compile Include="PCEvent.cs" />
     <Compile Include="PianoRoll.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +78,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Projekt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="PrototypeWaveOffsetStream32.cs" />
     <Compile Include="Soundbank.cs" />
     <Compile Include="SoundbankAdjuster.cs">
@@ -86,6 +91,7 @@
     <Compile Include="SoundbankAdjuster.Designer.cs">
       <DependentUpon>SoundbankAdjuster.cs</DependentUpon>
     </Compile>
+    <Compile Include="SysexEvent.cs" />
     <Compile Include="Track.cs" />
     <EmbeddedResource Include="InputVelocity.resx">
       <DependentUpon>InputVelocity.cs</DependentUpon>
@@ -99,12 +105,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="SoundbankAdjuster.resx">
       <DependentUpon>SoundbankAdjuster.cs</DependentUpon>
     </EmbeddedResource>
@@ -120,6 +121,294 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45051__matias-reccius__floortom1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45052__matias-reccius__floortom2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45053__matias-reccius__floortom3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45054__matias-reccius__floortom4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45055__matias-reccius__hihat-closed1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45056__matias-reccius__hihat-closed2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45057__matias-reccius__hihat-closed3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45058__matias-reccius__hihat-closed4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45059__matias-reccius__hihat-closed5.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45060__matias-reccius__hihat-closed6.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45061__matias-reccius__hihat-closed7.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45062__matias-reccius__hihat-open1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45063__matias-reccius__hihat-open2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45064__matias-reccius__hihat-open3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45065__matias-reccius__hihat-open4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45066__matias-reccius__ride-bell1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45067__matias-reccius__ride-bell2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45068__matias-reccius__ride-bell3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45069__matias-reccius__ride-rim1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45070__matias-reccius__ride-rim2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45071__matias-reccius__ride-rim3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45072__matias-reccius__snarec01.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45073__matias-reccius__snarec02.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45074__matias-reccius__snarec03.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45075__matias-reccius__snarec04.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45076__matias-reccius__snarec05.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45077__matias-reccius__snarec06.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45078__matias-reccius__snarec07.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45079__matias-reccius__snarec08.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45080__matias-reccius__snarec09.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45081__matias-reccius__snarec10.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45082__matias-reccius__tom10-1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45083__matias-reccius__tom10-2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45084__matias-reccius__tom10-3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45085__matias-reccius__tom10-4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45086__matias-reccius__tom10-5.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45087__matias-reccius__tom12-1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45088__matias-reccius__tom12-2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45089__matias-reccius__tom12-3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45090__matias-reccius__tom12-4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45091__matias-reccius__tom13-1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45092__matias-reccius__tom13-2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45093__matias-reccius__tom13-3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45094__matias-reccius__tom13-4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45095__matias-reccius__tom14-1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45096__matias-reccius__tom14-2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45097__matias-reccius__tom14-3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45098__matias-reccius__tom14-4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45099__matias-reccius__bass1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45100__matias-reccius__china.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45101__matias-reccius__crasha.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45102__matias-reccius__crashb.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\45103__matias-reccius__splash.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50944__matias-reccius__hihat-closedv2-1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50945__matias-reccius__hihat-closedv2-2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50946__matias-reccius__hihat-closedv2-3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50947__matias-reccius__hihat-closedv2-4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50948__matias-reccius__hihat-closedv2-5.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50949__matias-reccius__hihat-closedv2-6.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50950__matias-reccius__hihat-closedv2-7.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50951__matias-reccius__hihat-closedv2-8.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50952__matias-reccius__hihat-openv2-1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50953__matias-reccius__hihat-openv2-2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50954__matias-reccius__hihat-openv2-3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50955__matias-reccius__hihat-openv2-4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50956__matias-reccius__hihat-openv2-5.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50957__matias-reccius__hihat-openv2-6.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50958__matias-reccius__ride-bellv2-1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50959__matias-reccius__ride-bellv2-2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50960__matias-reccius__ride-bellv2-3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50961__matias-reccius__ride-rimv2-1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50962__matias-reccius__ride-rimv2-2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50963__matias-reccius__ride-rimv2-3.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50964__matias-reccius__ride-rimv2-4.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50965__matias-reccius__snared01.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50966__matias-reccius__snared02.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50967__matias-reccius__snared03.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50968__matias-reccius__snared04.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50969__matias-reccius__snared05.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50970__matias-reccius__snared06.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50971__matias-reccius__snared07.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50972__matias-reccius__snared08.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50973__matias-reccius__snared09.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50974__matias-reccius__snared10.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50975__matias-reccius__snared11.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50976__matias-reccius__snared12.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50977__matias-reccius__snared13.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50978__matias-reccius__snared14.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50979__matias-reccius__snared15.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50980__matias-reccius__snared16.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50981__matias-reccius__snared17.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50982__matias-reccius__bass2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50983__matias-reccius__chinav2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50984__matias-reccius__crashav2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50985__matias-reccius__crashbv2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\2863__matias-reccius__x-act-heavy-metal-drum-kit\50986__matias-reccius__splashv2.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

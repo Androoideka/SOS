@@ -1,12 +1,15 @@
-﻿namespace SOS
+﻿using NAudio.Wave;
+
+namespace SOS
 {
     public class Soundbank
     {
-        public string ime;
-        public string[] note;
-        public Soundbank(string p, string[] files)
+        public string ime { get; }
+        private string[] note;
+        public Soundbank(string p)
         {
             ime = p;
+            string[] files = System.IO.Directory.GetFiles(ime);
             if (files.Length == 128)
                 note = files;
             else
@@ -21,6 +24,10 @@
                         j = 0;
                 }
             }
+        }
+        public AudioFileReader CreateSound(int i, byte vel)
+        {
+            return new AudioFileReader(note[i]) { Volume = 1f / 127f * vel };
         }
     }
 }

@@ -6,12 +6,11 @@ namespace SOS
 {
     public partial class PianoRoll : Form
     {
-        public Projekt p;
+        public Projekt p { get; }
         private byte velocityBrush = 64;
         public PianoRoll()
         {
             p = new Projekt();
-            p.trLength++;
             InitializeComponent();
         }
         private void PianoRoll_Load(object sender, EventArgs e)
@@ -23,13 +22,7 @@ namespace SOS
             trInst.DoubleBuffered(true);
             trComp.DoubleBuffered(true);
             SetupDataGrids(0, (int)trLng.Value, trInst.Height);
-            if (p.tr[0] != null)
-                LoadIn(p.tr[0].ExportPattern(), trComp, trInst);
-            else
-            {
-                p.tr[0] = new Track();
-                trLng.Minimum = 16;
-            }
+            LoadIn(p.tr[0].ExportPattern(), trComp, trInst);
         }
         // Methods for upper 2 controls
         private void ValChange(object sender, EventArgs e)
@@ -179,7 +172,7 @@ namespace SOS
                 {
                     trComp[e.ColumnIndex, e.RowIndex].Selected = true;
                     trComp[e.ColumnIndex, e.RowIndex].Value = velocityBrush;
-                    AudioPlaybackEngine.Instance.Play(Projekt.sb[Convert.ToByte(trInst[e.ColumnIndex, 0].Value)].note[e.RowIndex], Convert.ToSingle(trComp[e.ColumnIndex, e.RowIndex].Value));
+                    AudioPlaybackEngine.Instance.Play(Projekt.sb[Convert.ToByte(trInst[e.ColumnIndex, 0].Value)].CreateSound(e.RowIndex, Convert.ToByte(trComp[e.ColumnIndex, e.RowIndex].Value)));
                 }
                 AssignColour(e.ColumnIndex, e.RowIndex);
             }
@@ -212,7 +205,8 @@ namespace SOS
         }
         private void velocityBrushToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InputVelocity inp = new InputVelocity(velocityBrush);
+            InputVelocity inp = new InputVelocity();
+            inp.velocity = velocityBrush;
             inp.ShowDialog();
             velocityBrush = inp.velocity;
         }

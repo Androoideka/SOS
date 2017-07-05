@@ -76,28 +76,28 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.saveAsToolStripMenuItem.Text = "Save as";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // instrumentsToolStripMenuItem
             // 
             this.instrumentsToolStripMenuItem.Name = "instrumentsToolStripMenuItem";
-            this.instrumentsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.instrumentsToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.instrumentsToolStripMenuItem.Text = "Instruments";
             this.instrumentsToolStripMenuItem.Click += new System.EventHandler(this.instrumentsToolStripMenuItem_Click);
             // 
@@ -114,7 +114,7 @@
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             // 
             // tempoToolStripMenuItem
@@ -129,7 +129,7 @@
             this.larghettoToolStripMenuItem,
             this.largoToolStripMenuItem});
             this.tempoToolStripMenuItem.Name = "tempoToolStripMenuItem";
-            this.tempoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tempoToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.tempoToolStripMenuItem.Text = "Tempo";
             // 
             // prestissimoToolStripMenuItem
@@ -199,7 +199,7 @@
             // playToolStripMenuItem
             // 
             this.playToolStripMenuItem.Name = "playToolStripMenuItem";
-            this.playToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.playToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.playToolStripMenuItem.Text = "Play";
             this.playToolStripMenuItem.Click += new System.EventHandler(this.playStopToolStripMenuItem_Click);
             // 
@@ -230,6 +230,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ProjectView";
             this.Text = "Project View";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProjectView_FormClosing);
             this.Load += new System.EventHandler(this.ProjectView_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

@@ -5,10 +5,10 @@ namespace SOS
 {
     public partial class ProjectView : Form
     {
-        Projekt prj = new Projekt();
-        Button[] b = new Button[16];
-        string loc;
-        int n;
+        private Projekt prj = new Projekt();
+        private Button[] b = new Button[16];
+        private string loc;
+        private int n;
         public ProjectView()
         {
             InitializeComponent();
@@ -32,7 +32,6 @@ namespace SOS
         private void button1_Click(object sender, EventArgs e)
         {
             Controls.Add(b[n]);
-            prj.trLength++;
             bClick(b[n], new EventArgs());
             n++;
             deleteToolStripMenuItem.DropDownItems.Add("Track " + n);
@@ -47,9 +46,9 @@ namespace SOS
         {
             int i = Convert.ToInt32((sender as Button).Tag);
             PianoRoll pr = new PianoRoll();
+            pr.p.SetTempo(prj.GetTempo());
             pr.p.tr[0] = prj.tr[i];
             pr.Show();
-            prj.tr[i] = pr.p.tr[0];
         }
         private void SetCheckedMenuItem()
         {
@@ -99,18 +98,19 @@ namespace SOS
             {
                 loc = saveFileDialog1.FileName;
                 prj.Save(loc);
-                Projekt.SaveInstruments(loc);
             }
         }
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (loc != null)
-            {
                 prj.Save(loc);
-                Projekt.SaveInstruments(loc);
-            }
             else
                 saveAsToolStripMenuItem_Click(saveAsToolStripMenuItem, e);
+        }
+
+        private void ProjectView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            AudioPlaybackEngine.Instance.Dispose();
         }
     }
 }

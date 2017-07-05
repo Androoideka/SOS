@@ -5,10 +5,9 @@ namespace SOS
 {
     public partial class InputVelocity : Form
     {
-        public byte velocity;
-        public InputVelocity(byte curVel)
+        public byte velocity { get; set; }
+        public InputVelocity()
         {
-            velocity = curVel;
             InitializeComponent();
         }
         private void InputVelocity_Load(object sender, EventArgs e)

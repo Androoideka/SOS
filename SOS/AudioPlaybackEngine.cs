@@ -9,7 +9,7 @@ namespace SOS
         private readonly IWavePlayer outputDevice;
         private readonly MixingWaveProvider32 mixer;
         private Timer tmr;
-        private bool lok = true;
+        private bool lok;
 
         public AudioPlaybackEngine(int sampleRate = 44100, int channelCount = 2)
         {
@@ -31,23 +31,24 @@ namespace SOS
         }
         public void Play(IWaveProvider pst, double length)
         {
-            if (lok)
+            if (!lok)
             {
+                lok = true;
                 tmr = new Timer(length + 100);
                 tmr.AutoReset = false;
                 tmr.Elapsed += Elapse;
                 tmr.Start();
                 mixer.AddInputStream(pst);
-                lok = false;
             }
         }
-        public void Play(string file, float volume)
+        public void Play(WaveStream sound)
         {
-            mixer.AddInputStream(new AudioFileReader(file) { Volume = 1f / 127f * volume });
+            if(!lok)
+                mixer.AddInputStream(sound);
         }
         private void Elapse(object sender, ElapsedEventArgs e)
         {
-            lok = true;
+            lok = false;
         }
         public static readonly AudioPlaybackEngine Instance = new AudioPlaybackEngine(44100, 2);
     }

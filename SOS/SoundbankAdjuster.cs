@@ -9,7 +9,6 @@ namespace SOS
 {
     public partial class SoundbankAdjuster : Form
     {
-        // Add support for .riff (cbselectedindexchanged && savesetting
         int i = 0;
         public SoundbankAdjuster()
         {
@@ -21,24 +20,8 @@ namespace SOS
             MaximumSize = Size;
             GetAvailableInstruments();
         }
-        /// <summary>
-        /// Marked for deletion, add default soundbank to resources instead
-        /// </summary>
-        private void AddDefaultSound()
-        {
-            if (!Directory.Exists(@"WDS"))
-            {
-                Directory.CreateDirectory(@"WDS");
-                File.Copy(@"C:\Windows\Media\tada.wav", Path.Combine(@"WDS", @"tada.wav"), true);
-            }
-        }
-        private void AiffConverter()
-        {
-
-        }
         private void GetAvailableInstruments()
         {
-            AddDefaultSound();
             string[] temp = Directory.GetDirectories(".");
             for (int j = 0; j < temp.Length; j++)
                 temp[j] = Path.GetFileName(temp[j]);
@@ -69,8 +52,10 @@ namespace SOS
             }
             using (AudioFileReader reader = new AudioFileReader(s))
             {
-                var resampler = new SampleToWaveProvider(new MonoToStereoSampleProvider(new WdlResamplingSampleProvider(reader, 44100)));
-                WaveFileWriter.CreateWaveFile(d, resampler);
+                ISampleProvider resampler = new WdlResamplingSampleProvider(reader, 44100);
+                if (resampler.WaveFormat.Channels != 2)
+                    resampler = new MonoToStereoSampleProvider(resampler);
+                WaveFileWriter.CreateWaveFile(d, new SampleToWaveProvider(resampler));
             }
         }
         private void cb_SelectedIndexChanged(object sender, EventArgs e)
@@ -96,7 +81,7 @@ namespace SOS
         private void SaveSetting()
         {
             if(cb.Items[cb.SelectedIndex].ToString() != Projekt.sb[i].ime)
-                Projekt.sb[i] = new Soundbank(cb.Items[cb.SelectedIndex].ToString(), Directory.GetFiles(Path.Combine(Application.StartupPath, cb.Items[cb.SelectedIndex].ToString())));
+                Projekt.sb[i] = new Soundbank(cb.Items[cb.SelectedIndex].ToString());
         }
         private void LoadSetting()
         {
