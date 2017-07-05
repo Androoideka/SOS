@@ -15,6 +15,7 @@ namespace SOS
         private void ProjectView_Load(object sender, EventArgs e)
         {
             Projekt.CreateAllInstruments();
+            Projekt.SetSoundbanks();
             SetCheckedMenuItem();
             for (int i = 0; i < 16; i++)
             {
@@ -43,6 +44,7 @@ namespace SOS
             PianoRoll pr = new PianoRoll(prj.tr[i]);
             pr.Show();
             prj.tr[i] = pr.p.tr[0];
+            prj.trLength++;
         }
         private void SetCheckedMenuItem()
         {

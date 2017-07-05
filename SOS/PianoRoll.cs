@@ -14,6 +14,7 @@ namespace SOS
         public PianoRoll(Track tr)
         {
             p = new Projekt();
+            p.trLength++;
             p.tr[0] = tr;
             InitializeComponent();
         }
@@ -71,6 +72,7 @@ namespace SOS
             trComp.DoubleBuffered(true);
             trComp.Enabled = true;
             trComp.CellMouseMove += BeatTransform;
+            trComp.Focus();
 
             Controls.Add(trLng);
             Controls.Add(paintInst);

@@ -21,7 +21,7 @@ namespace SOS
             byte[] lastVal = new byte[129];
             for (int i = 0; i < 129; i++)
                 lastVal[i] = 0;
-            byte sixteenthsSinceLastMessage = 0;
+            int sixteenthsSinceLastMessage = 0;
             for (int i = 0; i < n; i++)
             {
                 for (int j = a.GetLength(0) - 1; j >= 0; j--)
@@ -39,7 +39,7 @@ namespace SOS
                 }
                 sixteenthsSinceLastMessage++;
             }
-            e.Add(new PCEvent(255, sixteenthsSinceLastMessage));
+            e.Add(new Event(255, sixteenthsSinceLastMessage));
         }
         private int lengthToPoint(int n)
         {
@@ -68,9 +68,8 @@ namespace SOS
                 count += e[i].getDT(1);
                 if (e[i].eventType == 0)
                     nizSablon[(e[i] as MIDIEvent).note, count] = (e[i] as MIDIEvent).velocity;
-                else if ((e[i] as PCEvent).patch != 255)
+                else if (e[i].eventType == 1)
                     nizSablon[128, count] = (byte)((e[i] as PCEvent).patch);
-
             }
             for (int i = 1; i < n; i++)
             {
@@ -87,38 +86,35 @@ namespace SOS
             for (int i = 0; i < 128; i++)
                 vel[i] = 0;
             Load(0);
-            ended = false;
             count = 0;
             eventNum = 0;
+            ended = false;
+            Play();
         }
-        private void PlaySound()
+        public void Play()
         {
+            System.Diagnostics.Stopwatch stp = System.Diagnostics.Stopwatch.StartNew();
+            while (!ended && count == e[eventNum].getDT(1))
+            {
+                if (e[eventNum].eventType == 255)
+                    ended = true;
+                else
+                {
+                    if (e[eventNum].eventType == 0)
+                        vel[(e[eventNum] as MIDIEvent).note] = (e[eventNum] as MIDIEvent).GetVolume();
+                    else if (e[eventNum].eventType == 1)
+                        Load((e[eventNum] as PCEvent).patch);
+                }
+                eventNum++;
+                count = 0;
+            }
+            count++;
             for (int i = 0; i < 128; i++)
             {
                 if (vel[i] != 0)
                     AudioPlaybackEngine.Instance.PlaySound(cas[i], vel[i]);
             }
-        }
-        private void NextSetE()
-        {
-            while (!(e[eventNum].eventType == 255 && (e[eventNum] as PCEvent).patch == 255) && count == e[eventNum].getDT(1))
-            {
-                //IS CORRECT BUT NEEDS TO BE OPTIMISED! TIMER IS MULTITHREADED
-                if (e[eventNum].eventType == 0)
-                    vel[(e[eventNum] as MIDIEvent).note] = (e[eventNum] as MIDIEvent).GetVolume();
-                else
-                    Load((e[eventNum] as PCEvent).patch);
-                eventNum++;
-                count = 0;
-            }
-            if (e[eventNum].eventType == 255 && (e[eventNum] as PCEvent).patch == 255 && e[eventNum].getDT(1) == count)
-                ended = true;
-            count++;
-        }
-        public void Play()
-        {
-            PlaySound();
-            NextSetE();
+            System.Diagnostics.Debug.Write(stp.ElapsedMilliseconds + "ms\n");
         }
         private void Load(int i)
         {

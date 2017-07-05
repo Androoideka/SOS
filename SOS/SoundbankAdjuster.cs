@@ -8,8 +8,8 @@ namespace SOS
 {
     public partial class SoundbankAdjuster : Form
     {
-        Label[] lb = new Label[10];
-        ComboBox[] cb = new ComboBox[10];
+        Label[] lb = new Label[16];
+        ComboBox[] cb = new ComboBox[16];
         public SoundbankAdjuster()
         {
             InitializeComponent();
