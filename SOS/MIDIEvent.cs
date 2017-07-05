@@ -59,10 +59,10 @@
                 i++;
             }
         }
-        internal int CalculateChunks(byte runningStatus)
+        internal override int CalculateChunks(Event runningStatus)
         {
-            int i = 0;
-            if (Status() != runningStatus)
+            int i = base.CalculateChunks(runningStatus);
+            if ((runningStatus as MIDIEvent) != null && Status() != (runningStatus as MIDIEvent).Status())
                 i++;
             i++;
             if (eventType != 12 && eventType != 13)
@@ -74,6 +74,24 @@
             int status = eventType * 16;
             status += channel;
             return (byte)status;
+        }
+        internal override byte[] WriteEvent(Event runningStatus, ref int n)
+        {
+            n = 0;
+            byte[] e = base.WriteEvent(runningStatus, ref n);
+            if ((runningStatus as MIDIEvent) != null && Status() != (runningStatus as MIDIEvent).Status())
+            {
+                e[n] = Status();
+                n++;
+            }
+            if(eventType != 12 && eventType != 13)
+            {
+                e[n] = note;
+                n++;
+            }
+            e[n] = velocity;
+            n++;
+            return e;
         }
     }
 }

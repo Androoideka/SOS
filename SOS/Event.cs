@@ -50,25 +50,21 @@ namespace SOS
                 vlv = 0 + vlv;
             return vlv;
         }
-        internal int CalculateChunks()
+        internal virtual int CalculateChunks(Event runningStatus)
         {
             int i = CalculateVLV(deltaTime).Length / 7;
-            if (eventType == 255)
-                i += (this as MetaEvent).CalculateChunks();
-            else if (eventType > 200)
-                i += (this as SysexEvent).CalculateChunks();
-            else
-                i += (this as MIDIEvent).CalculateChunks();
             return i;
         }
-        internal virtual byte[] WriteEvent()
+        internal virtual byte[] WriteEvent(Event runningStatus, ref int n)
         {
-            byte[] e = new byte[CalculateChunks()];
-            int n = 0;
+            n = 0;
+            byte[] e = new byte[CalculateChunks(runningStatus)];
             byte[] temp = WriteVLV(deltaTime);
             for (int i = 0; i < temp.Length; i++)
                 e[i] = temp[i];
             n = temp.Length;
+            e[n] = eventType;
+            n++;
             return e;
         }
     }

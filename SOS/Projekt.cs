@@ -184,7 +184,7 @@ namespace SOS
         /// <returns></returns>
         private int ReadChunk(byte[] file, ref int i, int val)
         {
-            val *= 10 + file[i];
+            val = val * 10 + file[i];
             i++;
             return val;
         }

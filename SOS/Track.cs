@@ -96,7 +96,7 @@ namespace SOS
         }
         private int ReadChunk(byte[] file, ref int i, int val)
         {
-            val *= 10 + file[i];
+            val = val * 10 + file[i];
             i++;
             return val;
         }
@@ -203,7 +203,12 @@ namespace SOS
             WriteLength(sw);
             for (int i = 0; i < e.Count; i++)
             {
-                byte[] write = e[i].WriteEvent();
+                int n = 0;
+                byte[] write;
+                if (i != 0)
+                    write = e[i].WriteEvent(e[i - 1], ref n);
+                else
+                    write = e[i].WriteEvent(null, ref n);
                 for (int j = 0; j < write.Length; j++)
                     sw.Write(write[j]);
             }
@@ -213,7 +218,12 @@ namespace SOS
         {
             int length = 0;
             for (int i = 0; i < e.Count; i++)
-                length += e[i].CalculateChunks();
+            {
+                if (i != 0)
+                    length += e[i].CalculateChunks(e[i - 1]);
+                else
+                    length += e[i].CalculateChunks(null);
+            }
             for (int i = 4; i >= 0; i--)
             {
                 int p = length / (int)Math.Pow(255, i);

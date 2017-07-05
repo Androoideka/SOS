@@ -23,16 +23,27 @@
             }
         }
         //SHOULD BE USING AN OVERRIDE!
-        protected int CalculateChunks(byte runningStatus)
+        internal override int CalculateChunks(Event runningStatus)
         {
-            int i = 2;
+            int i = base.CalculateChunks(runningStatus) + 2;
             i += CalculateVLV(data.Length).Length / 7;
             i += data.Length;
             return i;
         }
-        internal override void WriteEvent()
+        internal override byte[] WriteEvent(Event runningStatus, ref int n)
         {
-
+            n = 0;
+            byte[] e = base.WriteEvent(runningStatus, ref n);
+            e[n] = type;
+            n++;
+            byte[] temp = WriteVLV(data.Length);
+            for (int i = 0; i < temp.Length; i++)
+                e[n + i] = temp[i];
+            n += temp.Length;
+            for (int i = 0; i < data.Length; i++)
+                e[n + i] = data[i];
+            n += data.Length;
+            return e;
         }
     }
 }
