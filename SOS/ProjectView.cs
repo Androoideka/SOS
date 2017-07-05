@@ -23,8 +23,9 @@ namespace SOS
                 b[i].Top = button1.Top + i * 32;
                 b[i].Left = button1.Left;
                 b[i].Width = ClientRectangle.Width - 2 * b[i].Left;
+                b[i].Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Bottom | AnchorStyles.Right);
                 b[i].Tag = i;
-                b[i].Text = "Edit Track " + i;
+                b[i].Text = "Edit Track " + (i+1);
                 b[i].Click += bClick;
             }
         }
@@ -32,7 +33,11 @@ namespace SOS
         {
             Controls.Add(b[n]);
             bClick(b[n], new EventArgs());
+            prj.trLength++;
             n++;
+            deleteToolStripMenuItem.DropDownItems.Add("Track " + n);
+            deleteToolStripMenuItem.DropDownItems[n - 1].Tag = n - 1;
+            deleteToolStripMenuItem.DropDownItems[n - 1].Click += deleteToolStripMenuItem_Click;
             if (n < 16)
                 button1.Top += 32;
             else
@@ -44,7 +49,6 @@ namespace SOS
             PianoRoll pr = new PianoRoll(prj.tr[i]);
             pr.Show();
             prj.tr[i] = pr.p.tr[0];
-            prj.trLength++;
         }
         private void SetCheckedMenuItem()
         {
@@ -57,16 +61,13 @@ namespace SOS
                     (tempoToolStripMenuItem.DropDownItems[i] as ToolStripMenuItem).CheckState = CheckState.Unchecked;
             }
         }
-        private void tempoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int p = Convert.ToInt32((sender as ToolStripMenuItem).Tag);
-            prj.SetTempo(p);
-            SetCheckedMenuItem();
+            Application.Restart();
         }
-
-        private void playStopToolStripMenuItem_Click(object sender, EventArgs e)
+        private void instrumentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            prj.Reset();
+            Projekt.SetSoundbanks();
         }
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -75,17 +76,20 @@ namespace SOS
             else
                 button1.Top -= 32;
             n--;
+            int i = Convert.ToInt32((sender as ToolStripMenuItem).Tag);
+            deleteToolStripMenuItem.DropDownItems.Remove(deleteToolStripMenuItem.DropDownItems[n]);
             Controls.Remove(b[n]);
-            int i = Convert.ToInt32((sender as ToolStripMenuItem).Text);
-            prj.DeleteTrack(i - 1);
+            prj.DeleteTrack(i);
         }
-        private void soundbanksToolStripMenuItem_Click_1(object sender, EventArgs e)
+        private void tempoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Projekt.SetSoundbanks();
+            int p = Convert.ToInt32((sender as ToolStripMenuItem).Tag);
+            prj.SetTempo(p);
+            SetCheckedMenuItem();
         }
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        private void playStopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Restart();
+            prj.Reset();
         }
     }
 }

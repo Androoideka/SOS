@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using System.Timers;
-using System.Diagnostics;
 
 namespace SOS
 {
@@ -10,6 +9,7 @@ namespace SOS
         public Track[] tr;
         public int trLength;
         public static Soundbank[] sb;
+        int j;
         public Projekt()
         {
             tr = new Track[16];
@@ -18,12 +18,9 @@ namespace SOS
         }
         private void TmrTick(object sender, ElapsedEventArgs e)
         {
-            int j = 0;
             for (int i = 0; i < trLength; i++)
             {
-                if (!tr[i].ended)
-                    Parallel.Invoke(tr[i].Play);
-                else
+                if (Task<bool>.Factory.StartNew(() => tr[i].Play()).Result)
                     j++;
             }
             if (j == trLength)
@@ -31,8 +28,11 @@ namespace SOS
         }
         public void Reset()
         {
+            j = 0;
+            System.Action[] parms = new System.Action[trLength];
             for (int i = 0; i < trLength; i++)
-                Parallel.Invoke(tr[i].ResetTrackPosition);
+                parms[i] = tr[i].ResetTrackPosition;
+            Parallel.Invoke(parms);
             tmr.Start();
         }
         public static void SetSoundbanks()

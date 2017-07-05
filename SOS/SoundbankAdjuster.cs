@@ -8,11 +8,17 @@ namespace SOS
 {
     public partial class SoundbankAdjuster : Form
     {
-        Label[] lb = new Label[16];
-        ComboBox[] cb = new ComboBox[16];
+        int i = 0;
         public SoundbankAdjuster()
         {
             InitializeComponent();
+        }
+        private void SoundbankAdjuster_Load(object sender, EventArgs e)
+        {
+            MinimumSize = Size;
+            MaximumSize = Size;
+            AddDefaultSound();
+            LoadIn();
         }
         private void AddDefaultSound()
         {
@@ -29,85 +35,54 @@ namespace SOS
                 WaveFileWriter.CreateWaveFile16(d, resampler);
             }
         }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            {
-                string path = Path.Combine(Application.StartupPath, Path.GetFileName(folderBrowserDialog1.SelectedPath));
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-                string[] files = Directory.GetFiles(folderBrowserDialog1.SelectedPath, "*.wav");
-                for (int i = 0; i < files.Length; i++)
-                    Resample(files[i], Path.Combine(path, Path.GetFileName(files[i])));
-            }
-            LoadIn();
-        }
         private void LoadIn()
         {
             string[] temp = Directory.GetDirectories(Application.StartupPath);
             for (int i = 0; i < temp.Length; i++)
                 temp[i] = Path.GetFileName(temp[i]);
-            AddToCB(temp);
-            ExistingSettings();
+            cb.Items.Clear();
+            cb.Items.AddRange(temp);
+            cb.Items.Add("Import Soundbanks...");
+            LoadSetting();
         }
-        private void AddToCB(string[] p)
+        private void cb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            for (int i = 0; i < cb.Length; i++)
+            if (cb.SelectedIndex == cb.Items.Count - 1)
             {
-                cb[i].Items.Clear();
-                cb[i].Items.AddRange(p);
+                if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    string path = Path.Combine(Application.StartupPath, Path.GetFileName(folderBrowserDialog1.SelectedPath));
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    string[] files = Directory.GetFiles(folderBrowserDialog1.SelectedPath, "*.wav");
+                    for (int i = 0; i < files.Length; i++)
+                        Resample(files[i], Path.Combine(path, Path.GetFileName(files[i])));
+                }
+                LoadIn();
             }
         }
-        private void ExistingSettings()
+        private void SaveSetting()
         {
-            for (int i = 0; i < cb.Length; i++)
+            Projekt.sb[i] = new Soundbank(cb.Items[cb.SelectedIndex].ToString(), Directory.GetFiles(Path.Combine(Application.StartupPath, cb.Items[cb.SelectedIndex].ToString())));
+        }
+        private void LoadSetting()
+        {
+            cb.SelectedIndex = 0;
+            for (int j = 0; j < cb.Items.Count; j++)
             {
-                cb[i].SelectedIndex = 0;
-                for (int j = 0; j < cb[i].Items.Count; j++)
-                {
-                    if (Projekt.sb[i].ime == cb[i].Items[j].ToString())
-                        cb[i].SelectedIndex = j;
-                }
+                if (Projekt.sb[i].ime == cb.Items[j].ToString())
+                    cb.SelectedIndex = j;
             }
         }
-        private void CreateControls()
+        private void nud_ValueChanged(object sender, EventArgs e)
         {
-            for (int i = 0; i < cb.Length; i++)
-            {
-                lb[i] = new Label();
-                lb[i].Left = button1.Left;
-                lb[i].Text = "Instrument " + i;
-                Controls.Add(lb[i]);
-                cb[i] = new ComboBox();
-                cb[i].Left = button1.Left;
-                cb[i].Width = button1.Width;
-                cb[i].AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                cb[i].AutoCompleteSource = AutoCompleteSource.ListItems;
-                Controls.Add(cb[i]);
-                cb[i].BringToFront();
-                if (i == 0)
-                {
-                    lb[i].Top = button1.Bottom;
-                    cb[i].Top = button1.Bottom + 12;
-                }
-                else
-                {
-                    lb[i].Top = cb[i - 1].Bottom;
-                    cb[i].Top = cb[i - 1].Bottom + 12;
-                }
-            }
-        }
-        private void SoundbankAdjuster_Load(object sender, EventArgs e)
-        {
-            CreateControls();
-            AddDefaultSound();
-            LoadIn();
+            SaveSetting();
+            i = (int)nud.Value - 1;
+            LoadSetting();
         }
         private void SoundbankAdjuster_FormClosing(object sender, FormClosingEventArgs e)
         {
-            for (int i = 0; i < cb.Length; i++)
-                Projekt.sb[i] = new Soundbank(cb[i].Items[cb[i].SelectedIndex].ToString(), Directory.GetFiles(Path.Combine(Application.StartupPath, cb[i].Items[cb[i].SelectedIndex].ToString())));
+            SaveSetting();
         }
     }
 }
-

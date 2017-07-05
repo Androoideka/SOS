@@ -7,9 +7,6 @@ namespace SOS
     public partial class PianoRoll : Form
     {
         public Projekt p;
-        private NumericUpDown trLng;
-        private DataGridView trInst, trComp;
-        private ComboBox paintInst;
         private byte velocityBrush = 64;
         public PianoRoll(Track tr)
         {
@@ -20,65 +17,13 @@ namespace SOS
         }
         private void PianoRoll_Load(object sender, EventArgs e)
         {
-            WindowState = FormWindowState.Maximized;
             MinimumSize = Size;
             MaximumSize = Size;
-
-            trLng = new NumericUpDown();
-            trLng.Top = menuStrip1.Bottom;
-            trLng.Font = new Font("Arial", 32f);
             trLng.Maximum = decimal.MaxValue;
-            trLng.Enabled = true;
-            trLng.ValueChanged += ValChange;
-
-            paintInst = new ComboBox();
-            paintInst.Top = menuStrip1.Bottom;
-            paintInst.Left = trLng.Right + ClientRectangle.Width / 128;
-            paintInst.Width = ClientRectangle.Width / 5;
-            paintInst.Font = new Font("Arial", 32f);
-            paintInst.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            paintInst.AutoCompleteSource = AutoCompleteSource.ListItems;
-            paintInst.Enabled = true;
             SetInstruments(paintInst);
-
-            trInst = new DataGridView();
-            trInst.Top = trLng.Bottom + ClientRectangle.Height / 128;
-            trInst.Width = ClientRectangle.Width;
-            trInst.Height = ClientRectangle.Height / 16;
-            trInst.ReadOnly = true;
-            trInst.RowHeadersVisible = false;
-            trInst.ColumnHeadersVisible = false;
-            trInst.AllowUserToResizeColumns = false;
-            trInst.AllowUserToResizeRows = false;
-            trInst.AllowUserToAddRows = false;
-            trInst.AllowUserToDeleteRows = false;
-            trInst.ScrollBars = ScrollBars.Both;
             trInst.DoubleBuffered(true);
-            trInst.Enabled = true;
-            trInst.CellMouseMove += InstrumentPaint;
-
-            trComp = new DataGridView();
-            trComp.Top = trInst.Bottom + ClientRectangle.Height / 128;
-            trComp.Width = ClientRectangle.Width;
-            trComp.Height = ClientRectangle.Height - trComp.Top;
-            trComp.ReadOnly = true;
-            trComp.RowHeadersVisible = false;
-            trComp.ColumnHeadersVisible = false;
-            trComp.AllowUserToResizeColumns = false;
-            trComp.AllowUserToResizeRows = false;
-            trComp.AllowUserToAddRows = false;
-            trComp.AllowUserToDeleteRows = false;
-            trComp.ScrollBars = ScrollBars.Both;
             trComp.DoubleBuffered(true);
-            trComp.Enabled = true;
-            trComp.CellMouseMove += BeatTransform;
-            trComp.Focus();
-
-            Controls.Add(trLng);
-            Controls.Add(paintInst);
-            Controls.Add(trInst);
-            Controls.Add(trComp);
-            SetupTrComp(0, (int)trLng.Value, ClientRectangle.Height / 16);
+            SetupTrComp(0, (int)trLng.Value, trInst.Height);
             if (p.tr[0] != null)
                 LoadIn(p.tr[0].ExportPattern(), trComp, trInst);
             else
@@ -92,7 +37,7 @@ namespace SOS
             cb.Items.Clear();
             for (int i = 0; i < Projekt.sb.Length; i++)
             {
-                if(i == 0 || Projekt.sb[i].ime != Projekt.sb[i-1].ime)
+                if (i == 0 || Projekt.sb[i].ime != Projekt.sb[i - 1].ime)
                     cb.Items.Add(Projekt.sb[i].ime);
             }
             cb.SelectedIndex = 0;
@@ -104,7 +49,7 @@ namespace SOS
             {
                 while (trLng.Value % 4 != 0)
                     trLng.Value += 1;
-                SetupTrComp(tempCol, Convert.ToInt32(trLng.Value), ClientRectangle.Height / 16);
+                SetupTrComp(tempCol, Convert.ToInt32(trLng.Value), trInst.Height);
             }
             else if (trLng.Value < tempCol)
             {
@@ -203,28 +148,25 @@ namespace SOS
         {
             SaveTrack();
         }
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveTrack();
-        }
         private void SaveTrack()
         {
             p.SaveToTrack(0, Generate(trComp, trInst), trComp.ColumnCount);
         }
-
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveTrack();
+        }
+        private void instrumentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Projekt.SetSoundbanks();
+            SetInstruments(paintInst);
+        }
         private void velocityBrushToolStripMenuItem_Click(object sender, EventArgs e)
         {
             InputVelocityForm inp = new InputVelocityForm(velocityBrush);
             inp.ShowDialog();
             velocityBrush = inp.velocity;
         }
-
-        private void setSoundbanksToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Projekt.SetSoundbanks();
-            SetInstruments(paintInst);
-        }
-
         private void playStopToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveTrack();
@@ -232,4 +174,3 @@ namespace SOS
         }
     }
 }
-

@@ -8,12 +8,10 @@ namespace SOS
         private int count, eventNum;
         private float[] vel;
         private string[] cas;
-        internal bool ended;
         public Track()
         {
             e = new List<Event>();
             vel = new float[128];
-            cas = new string[128];
         }
         internal void ImportPattern(byte[,] a, int n)
         {
@@ -88,16 +86,14 @@ namespace SOS
             Load(0);
             count = 0;
             eventNum = 0;
-            ended = false;
             Play();
         }
-        public void Play()
+        public bool Play()
         {
-            System.Diagnostics.Stopwatch stp = System.Diagnostics.Stopwatch.StartNew();
-            while (!ended && count == e[eventNum].getDT(1))
+            while (count == e[eventNum].getDT(1))
             {
                 if (e[eventNum].eventType == 255)
-                    ended = true;
+                    return true;
                 else
                 {
                     if (e[eventNum].eventType == 0)
@@ -114,12 +110,11 @@ namespace SOS
                 if (vel[i] != 0)
                     AudioPlaybackEngine.Instance.PlaySound(cas[i], vel[i]);
             }
-            System.Diagnostics.Debug.Write(stp.ElapsedMilliseconds + "ms\n");
+            return false;
         }
         private void Load(int i)
         {
-            for (int j = 0; j < 128; j++)
-                cas[j] = Projekt.sb[i].note[j];
+            cas = Projekt.sb[i].note;
         }
     }
 }
