@@ -15,7 +15,6 @@ namespace SOS
         }
         private void ProjectView_Load(object sender, EventArgs e)
         {
-            //Projekt.LoadInstruments();
             Projekt.SetSoundbanks();
             SetCheckedMenuItem();
             for (int i = 0; i < 16; i++)
@@ -33,8 +32,8 @@ namespace SOS
         private void button1_Click(object sender, EventArgs e)
         {
             Controls.Add(b[n]);
-            bClick(b[n], new EventArgs());
             prj.trLength++;
+            bClick(b[n], new EventArgs());
             n++;
             deleteToolStripMenuItem.DropDownItems.Add("Track " + n);
             deleteToolStripMenuItem.DropDownItems[n - 1].Tag = n - 1;
@@ -47,7 +46,8 @@ namespace SOS
         private void bClick(object sender, EventArgs e)
         {
             int i = Convert.ToInt32((sender as Button).Tag);
-            PianoRoll pr = new PianoRoll(prj.tr[i]);
+            PianoRoll pr = new PianoRoll();
+            pr.p.tr[0] = prj.tr[i];
             pr.Show();
             prj.tr[i] = pr.p.tr[0];
         }
@@ -62,6 +62,7 @@ namespace SOS
                     (tempoToolStripMenuItem.DropDownItems[i] as ToolStripMenuItem).CheckState = CheckState.Unchecked;
             }
         }
+        // Methods for menu
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Restart();
@@ -101,7 +102,6 @@ namespace SOS
                 Projekt.SaveInstruments(loc);
             }
         }
-
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (loc != null)

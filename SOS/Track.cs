@@ -14,7 +14,7 @@ namespace SOS
             e = new List<Event>();
             vel = new float[128];
         }
-        internal void ImportPattern(byte[,] a, int n)
+        public void ImportPattern(byte[,] a, int n)
         {
             e.Clear();
             byte[] lastVal = new byte[129];
@@ -90,7 +90,7 @@ namespace SOS
             count = 0;
             eventNum = 0;
         }
-        internal List<WaveStream> GenerateMix()
+        private List<WaveStream> GenerateMix()
         {
             List<WaveStream> mix = new List<WaveStream>();
             for (int i = 0; i < 128; i++)
@@ -100,16 +100,12 @@ namespace SOS
             }
             return mix;
         }
-        public bool Prepare()
+        public List<WaveStream> Read()
         {
             while (count == e[eventNum].getDT(1))
             {
                 if (e[eventNum].eventType == 255)
-                {
-                    for (int i = 0; i < 128; i++)
-                        vel[i] = 0;
-                    return false;
-                }
+                    return null;
                 else
                 {
                     if (e[eventNum].eventType == 0)
@@ -121,7 +117,7 @@ namespace SOS
                 count = 0;
             }
             count++;
-            return true;
+            return GenerateMix();
         }
         private void Load(int i)
         {

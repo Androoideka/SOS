@@ -150,7 +150,7 @@
             this.trInst.RowHeadersVisible = false;
             this.trInst.Size = new System.Drawing.Size(1240, 50);
             this.trInst.TabIndex = 3;
-            this.trInst.CellMouseMove += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.InstrumentPaint);
+            this.trInst.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.InstrumentPaint);
             // 
             // trComp
             // 
@@ -169,7 +169,6 @@
             this.trComp.RowHeadersVisible = false;
             this.trComp.Size = new System.Drawing.Size(1240, 826);
             this.trComp.TabIndex = 4;
-            this.trComp.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.BeatTransform);
             this.trComp.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.trComp_CellMouseDown);
             this.trComp.CellMouseMove += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.trComp_CellMouseMove);
             // 

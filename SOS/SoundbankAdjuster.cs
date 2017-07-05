@@ -3,11 +3,13 @@ using System.Windows.Forms;
 using System.IO;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using System.Linq;
 
 namespace SOS
 {
     public partial class SoundbankAdjuster : Form
     {
+        // Add support for .riff (cbselectedindexchanged && savesetting
         int i = 0;
         public SoundbankAdjuster()
         {
@@ -17,9 +19,11 @@ namespace SOS
         {
             MinimumSize = Size;
             MaximumSize = Size;
-            Projekt.LoadInstruments();
             GetAvailableInstruments();
         }
+        /// <summary>
+        /// Marked for deletion, add default soundbank to resources instead
+        /// </summary>
         private void AddDefaultSound()
         {
             if (!Directory.Exists(@"WDS"))
@@ -27,6 +31,10 @@ namespace SOS
                 Directory.CreateDirectory(@"WDS");
                 File.Copy(@"C:\Windows\Media\tada.wav", Path.Combine(@"WDS", @"tada.wav"), true);
             }
+        }
+        private void AiffConverter()
+        {
+
         }
         private void GetAvailableInstruments()
         {
@@ -39,11 +47,29 @@ namespace SOS
             cb.Items.Add("Import Soundbanks...");
             LoadSetting();
         }
-        private void Resample(string s, string d)
+        private void ConvertAndOrResample(string s, string d)
         {
+            if(s.EndsWith(".aiff"))
+            {
+                d = d.Replace("aiff", "wav");
+                using (AiffFileReader reader = new AiffFileReader(s))
+                {
+                    s = s.Replace("aiff", "wav");
+                    using (WaveFileWriter writer = new WaveFileWriter(s, reader.WaveFormat))
+                    {
+                        byte[] buffer = new byte[4096];
+                        int bytesRead = 0;
+                        do
+                        {
+                            bytesRead = reader.Read(buffer, 0, buffer.Length);
+                            writer.Write(buffer, 0, bytesRead);
+                        } while (bytesRead > 0);
+                    }
+                }
+            }
             using (AudioFileReader reader = new AudioFileReader(s))
             {
-                var resampler = new SampleToWaveProvider(new WdlResamplingSampleProvider(reader, 44100));
+                var resampler = new SampleToWaveProvider(new MonoToStereoSampleProvider(new WdlResamplingSampleProvider(reader, 44100)));
                 WaveFileWriter.CreateWaveFile(d, resampler);
             }
         }
@@ -57,9 +83,9 @@ namespace SOS
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
-                        string[] files = Directory.GetFiles(folderBrowserDialog1.SelectedPath, "*.wav");
-                        for (int j = 0; j < files.Length; j++)
-                            Resample(files[j], Path.Combine(path, Path.GetFileName(files[j])));
+                        var files = Directory.GetFiles(folderBrowserDialog1.SelectedPath, "*.*").Where(s => s.EndsWith(".wav") || s.EndsWith(".aiff"));
+                        for (int j = 0; j < files.Count(); j++)
+                            ConvertAndOrResample(files.ElementAt(j), Path.Combine(path, Path.GetFileName(files.ElementAt(j))));
                     }
                     else
                         MessageBox.Show("Directory already exists.");
